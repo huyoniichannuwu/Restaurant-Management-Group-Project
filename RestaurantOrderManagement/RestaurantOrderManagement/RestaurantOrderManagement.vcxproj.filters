@@ -68,5 +68,8 @@
     <ClInclude Include="KitchenStaff.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Waiter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
