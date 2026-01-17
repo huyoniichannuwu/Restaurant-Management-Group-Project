@@ -59,5 +59,8 @@
     <ClInclude Include="Invoice.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="InventoryItemMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
