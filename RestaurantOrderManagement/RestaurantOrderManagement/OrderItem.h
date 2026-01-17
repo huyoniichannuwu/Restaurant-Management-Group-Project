@@ -8,5 +8,5 @@ private:
 	float price;
 public:
 	OrderItem create(MenuItem menu_item, int quantity, float price);
-
+	float calculateCost();
 };
