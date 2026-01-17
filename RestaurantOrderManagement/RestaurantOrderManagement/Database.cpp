@@ -51,5 +51,3 @@ sql::PreparedStatement* Database::prepare(const std::string& sql)
 {
 	return con->prepareStatement(sql);
 }
-
-Database db;
