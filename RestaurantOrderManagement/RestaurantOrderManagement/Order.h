@@ -1,6 +1,3 @@
-#pragma once
-#include<chrono>
-#include"Database.h"
 #include "OrderItem.h"
 //enum status
 enum class OrderStatus
@@ -43,6 +40,4 @@ public:
 	void markCompleted();
 	Order create(int table_number, std::string note, std::string customer_name);
 	void setStatus(OrderStatus status);
-
-
 };

@@ -1,12 +1,4 @@
-#pragma once
-#include"string"
-#include"vector"
-#include "mysql_connection.h"
-#include <cppconn/driver.h>
-#include <cppconn/exception.h>
-#include <cppconn/prepared_statement.h>
-#include <cppconn/resultset.h>
-
+#include "common.h"
 class Database
 {
 private:
@@ -19,6 +11,7 @@ private:
 public:
     Database(const std::string& config_path = "config//db_config.json");
     ~Database();
+    sql::Connection getConnection();
     sql::ResultSet* select(const std::string& sql);
     sql::PreparedStatement* prepare(const std::string& sql);
 };

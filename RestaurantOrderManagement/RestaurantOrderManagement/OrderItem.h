@@ -1,5 +1,4 @@
-#pragma once
-#include "Database.h"
+#include "common.h"
 
 class OrderItem
 {
