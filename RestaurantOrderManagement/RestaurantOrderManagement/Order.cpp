@@ -56,7 +56,19 @@ std::vector<Order> Order::getAllOrders() //return all order in database
 	}
 	return order_list;
 }
-
+std::vector<OrderItem> Order::getOrderItems() const
+{
+	auto& db = Database::getDB();
+	std::vector<OrderItem> order_item_list;
+	auto qr = db.select("Select order_item_id, quantity, price from OrderItem where order_id =" + std::to_string(this->order_id));
+	while (qr.rs->next())
+	{
+		std::string id = qr.rs->getString("order_item_id");
+		int quantity = qr.rs->getInt("quantity");
+		float price = qr.rs->getDouble("price");
+		OrderItem order_item()
+	}
+}
 
 Order Order::getOrderById(int order_id) //use to find an order with order_id
 {

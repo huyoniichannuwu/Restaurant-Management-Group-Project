@@ -8,6 +8,6 @@ private:
 	int quantity;
 	float price;
 public:
-	OrderItem create(MenuItem menu_item, int quantity, float price);
+	OrderItem(const std::string& order_item_id,const int quantity,const float price);
 	float calculateCost();
 };
