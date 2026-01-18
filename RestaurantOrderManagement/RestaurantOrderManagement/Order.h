@@ -34,6 +34,6 @@ public:
 	void markPreparing();
 	void markReady();
 	void markCompleted();
-	Order create(int table_number, std::string note, std::string customer_name);
+	static Order create(int table_number, std::string note, std::string customer_name);
 	void setStatus(OrderStatus status);
 };
