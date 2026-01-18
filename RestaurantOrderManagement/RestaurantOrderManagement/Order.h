@@ -15,6 +15,8 @@ private:
 	std::string note;
 	std::string customer_name;
 public:
+	Order(const int order_id, const int table_number,const std::chrono::system_clock::time_point& order_time,const OrderStatus status,
+		const float total_amount,const std::string& note,const std::string& customer_name);
 	int getOrderId();
 	int getTableNumber();
 	std::chrono::system_clock::time_point getOrderTime();
