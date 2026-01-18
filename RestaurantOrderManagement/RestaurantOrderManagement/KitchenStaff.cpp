@@ -13,18 +13,18 @@ std::vector<std::vector<Order>> KitchenStaff::viewPendingOrders()
 	auto& db = Database::getDB();
 	std::vector<std::vector<Order>> order_list;
 	//return a result set, then conver this result set to vector
-	auto rs = db.select("Select * from OrderTable where order_status in ('PENDING','PREPARING','READY')");
-	while (rs->next())
+	auto qr = db.select("Select * from OrderTable where order_status in ('PENDING','PREPARING','READY')");
+	while (qr.rs->next())
 	{
 		std::vector<Order> tam;
-		int order_id = rs->getInt("order_id");
-		int table_number = rs->getInt("table_number");
-		OrderStatus status = stringToEnum(rs->getString("order_status"));
-		float total_amount = rs->getDouble("total_amount");
-		std::string note = rs->getString("note");
-		std::string customer_name = rs->getString("customer_name");
+		int order_id = qr.rs->getInt("order_id");
+		int table_number = qr.rs->getInt("table_number");
+		OrderStatus status = stringToEnum(qr.rs->getString("order_status"));
+		float total_amount = qr.rs->getDouble("total_amount");
+		std::string note = qr.rs->getString("note");
+		std::string customer_name = qr.rs->getString("customer_name");
 		//map datetime
-		std::string timeStr = rs->getString("order_time");
+		std::string timeStr = qr.rs->getString("order_time");
 		std::tm tm = {};
 		std::istringstream ss(timeStr);
 		ss >> std::get_time(&tm, "%Y-%m-%d %H:%M:%S");
@@ -33,6 +33,5 @@ std::vector<std::vector<Order>> KitchenStaff::viewPendingOrders()
 		tam.push_back(order);
 		order_list.push_back(tam);
 	}
-	delete rs;
 	return order_list;
 }
