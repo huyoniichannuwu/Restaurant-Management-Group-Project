@@ -39,16 +39,40 @@ void Order::cancel()
 void Order::sendToKitchen()
 {
 	this->status = OrderStatus::PENDING;
+	auto& db = Database::getDB();
+	std::string mysql_status = enumToString(this->status);
+	auto stmt = db.prepare("Update OrderTable set order_status = ? where order_id = ?");
+	stmt->setString(1, mysql_status);
+	stmt->setInt(2, this->order_id);
+	stmt->execute(); delete stmt;
 }
 void Order::markPreparing()
 {
 	this->status = OrderStatus::PREPARING;
+	auto& db = Database::getDB();
+	std::string mysql_status = enumToString(this->status);
+	auto stmt = db.prepare("Update OrderTable set order_status = ? where order_id = ?");
+	stmt->setString(1, mysql_status);
+	stmt->setInt(2, this->order_id);
+	stmt->execute(); delete stmt;
 }
 void Order::markReady()
 {
 	this->status = OrderStatus::READY;
+	auto& db = Database::getDB();
+	std::string mysql_status = enumToString(this->status);
+	auto stmt = db.prepare("Update OrderTable set order_status = ? where order_id = ?");
+	stmt->setString(1, mysql_status);
+	stmt->setInt(2, this->order_id);
+	stmt->execute(); delete stmt;
 }
 void Order::markCompleted()
 {
 	this->status = OrderStatus::COMPLETED;
+	auto& db = Database::getDB();
+	std::string mysql_status = enumToString(this->status);
+	auto stmt = db.prepare("Update OrderTable set order_status = ? where order_id = ?");
+	stmt->setString(1, mysql_status);
+	stmt->setInt(2, this->order_id);
+	stmt->execute(); delete stmt;
 }
