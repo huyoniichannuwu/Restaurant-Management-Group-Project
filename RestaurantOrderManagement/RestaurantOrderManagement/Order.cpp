@@ -7,3 +7,25 @@ Order::Order(const int order_id,const int table_number,const std::chrono::system
 	total_amount(total_amount), note(note), customer_name(customer_name)
 {
 }
+
+int Order::getOrderId() const
+{
+	return this->order_id;
+}
+int Order::getTableNumber() const
+{
+	return this->table_number;
+}
+std::chrono::system_clock::time_point Order::getOrderTime() const
+{
+	return this->order_time;
+}
+OrderStatus Order::getStatus() const
+{
+	return this->status;
+}
+void cancel();
+void sendToKitchen();
+void markPreparing();
+void markReady();
+void markCompleted();

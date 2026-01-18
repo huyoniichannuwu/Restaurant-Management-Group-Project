@@ -17,12 +17,12 @@ private:
 public:
 	Order(const int order_id, const int table_number,const std::chrono::system_clock::time_point& order_time,const OrderStatus status,
 		const float total_amount,const std::string& note,const std::string& customer_name);
-	int getOrderId();
-	int getTableNumber();
-	std::chrono::system_clock::time_point getOrderTime();
-	OrderStatus getStatus();
-	std::vector < std::vector<OrderItem>> getOrderItems();
-	std::string getNote();
+	int getOrderId() const;
+	int getTableNumber() const;
+	std::chrono::system_clock::time_point getOrderTime() const;
+	OrderStatus getStatus() const;
+	std::vector < std::vector<OrderItem>> getOrderItems() const;
+	std::string getNote() const;
 	static std::vector<std::vector<Order>> getAllOrders();
 	static Order getOrderById(int order_id);
 	void addOrderItem(OrderItem item);
