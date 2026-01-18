@@ -1,15 +1,7 @@
 #include "OrderItem.h"
+#include "OrderStatus.h"
 #pragma once
 //enum status
-enum class OrderStatus
-{
-	CREATED,
-	PENDING,
-	PREPARING,
-	READY,
-	COMPLETED,
-	CANCELLED
-};
 
 class Order
 {
