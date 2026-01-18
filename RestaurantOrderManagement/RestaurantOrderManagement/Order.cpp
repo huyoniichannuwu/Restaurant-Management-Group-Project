@@ -66,8 +66,10 @@ std::vector<OrderItem> Order::getOrderItems() const
 		std::string id = qr.rs->getString("order_item_id");
 		int quantity = qr.rs->getInt("quantity");
 		float price = qr.rs->getDouble("price");
-		OrderItem order_item()
+		OrderItem order_item(id, quantity, price);
+		order_item_list.push_back(order_item);
 	}
+	return order_item_list;
 }
 
 Order Order::getOrderById(int order_id) //use to find an order with order_id
