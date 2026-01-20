@@ -33,7 +33,7 @@ std::vector<Order> Waiter::viewActiveOrder() //return list of order which status
 {
 	auto& db = Database::getDB();
 	auto qr = db.select(
-		"Select*from OrderTable where order_status in ('CREATED','PENDING','PREPARING',READY')"
+		"Select*from OrderTable where order_status in ('CREATED','PENDING','PREPARING','READY') "
 		"ORDER BY FIELD (order_status,'READY','PREPARING','PENDING','CREATED')"
 	);
 	std::vector<Order> order_list;
