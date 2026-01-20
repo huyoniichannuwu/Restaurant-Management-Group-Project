@@ -1,5 +1,5 @@
 create database RestaurantOrderManagement;
-
+use RestaurantOrderManagement;
 create table Staff
 (
 	staff_id char(5) primary key not null,
@@ -60,13 +60,15 @@ create table OrderTable
     FOREIGN KEY(customer_id) REFERENCES Customer(customer_id)
 );
 
+
 create table OrderItem
 (
-	order_item_id char(5) not null primary key,
+	order_item_id char(5) not null,
     quantity int not null,
     price float,
     order_id int not null,
     item_id char(5) not null,
+    primary key(order_id, order_item_id),
     FOREIGN KEY(order_id) REFERENCES OrderTable(order_id),
     FOREIGN KEY(item_id) REFERENCES MenuItem(item_id)
 );
@@ -93,5 +95,4 @@ create table StaffOrder
     FOREIGN KEY(order_id) REFERENCES OrderTable(order_id),
     FOREIGN KEY(staff_id) REFERENCES Staff(staff_id)
 );
-
 
