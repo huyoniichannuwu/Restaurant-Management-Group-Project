@@ -201,3 +201,8 @@ void Order::syncNextItemNoFromItems()
 }
 
 ////////////////////////////////////////
+//order management
+Order Order::create(int table_number, std::string note, std::string customer_name)
+{
+	return Order(table_number, note, customer_name);
+}
