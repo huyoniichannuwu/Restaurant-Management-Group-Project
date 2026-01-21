@@ -30,7 +30,7 @@ public:
 	std::string getNote() const;
 	static std::vector<Order> getAllOrders();
 	static Order getOrderById(int order_id);
-	void addOrderItem(const OrderItem& item);
+	void addOrderItem(const MenuItem& menu_item, int quantity);
 	void removeOrderItem(std::string order_item_id);
 	void updateOrderItemQuantity(std::string order_item_id, int quantity);
 	void cancel();

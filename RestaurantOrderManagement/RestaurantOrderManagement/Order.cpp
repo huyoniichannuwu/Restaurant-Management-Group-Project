@@ -217,11 +217,31 @@ void Order::removeOrderItem(std::string order_item_id)
 	stmt->execute();
 }
 
-void Order::addOrderItem(const OrderItem& item)
+void Order::addOrderItem(const MenuItem& menu_item, int quantity)
 {
-
+	std::string order_item_id = generateOrderItemId();
+	OrderItem order_item = OrderItem::create(order_item_id, menu_item, quantity);
+	auto& db = Database::getDB();
+	auto stmt = db.prepare(
+		"Insert into OrderItem (order_item_id, order_item_name, quantity, price, order_id, item_id) "
+		"values (?,?,?,?,?,?)"
+	);
+	stmt->setString(1, order_item_id);
+	stmt->setString(2, menu_item.getItemName());
+	stmt->setInt(3, quantity);
+	stmt->setDouble(4, menu_item.getPrice());
+	stmt->setInt(5, this->order_id);
+	stmt->setString(6, menu_item.getItemId());
+	stmt->execute();
 }
+
+
 void Order::updateOrderItemQuantity(std::string order_item_id, int quantity)
 {
-
+	auto& db = Database::getDB();
+	auto stmt = db.prepare("update OrderItem set quantity = ? where order_id = ? and order_item_id = ?");
+	stmt->setInt(1, quantity);
+	stmt->setInt(2, this->order_id);
+	stmt->setString(3, order_item_id);
+	stmt->execute();
 }
