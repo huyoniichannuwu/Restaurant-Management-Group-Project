@@ -75,13 +75,14 @@ std::vector<OrderItem> Order::getOrderItems() const
 {
 	auto& db = Database::getDB();
 	std::vector<OrderItem> order_item_list;
-	auto qr = db.select("Select order_item_id, quantity, price from OrderItem where order_id =" + std::to_string(this->order_id));
+	auto qr = db.select("Select order_item_id,order_item_name quantity, price from OrderItem where order_id =" + std::to_string(this->order_id));
 	while (qr.rs->next())
 	{
 		std::string id = qr.rs->getString("order_item_id");
+		std::string name = qr.rs->getString("order_item_name");
 		int quantity = qr.rs->getInt("quantity");
 		float price = qr.rs->getDouble("price");
-		OrderItem order_item(id, quantity, price);
+		OrderItem order_item(id,name, quantity, price);
 		order_item_list.push_back(order_item);
 	}
 	return order_item_list;
@@ -216,3 +217,11 @@ void Order::removeOrderItem(std::string order_item_id)
 	stmt->execute();
 }
 
+void Order::addOrderItem(const OrderItem& item)
+{
+
+}
+void Order::updateOrderItemQuantity(std::string order_item_id, int quantity)
+{
+
+}

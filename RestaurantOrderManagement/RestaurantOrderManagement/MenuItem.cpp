@@ -26,6 +26,23 @@ bool MenuItem::isAvailable() const
 	return this->is_available;
 }
 
+MenuItem MenuItem::getMenuItemById(std::string id)
+{
+	auto& db = Database::getDB();
+	auto qr = db.select("Select * from MenuItem where item_id = '" + id + "'");
+	if (!qr.rs->next())
+	{
+		throw std::runtime_error("MenuItem not found");
+	}
+	std::string id = qr.rs->getString("item_id");
+	std::string name = qr.rs->getString("item_name");
+	float price = qr.rs->getDouble("price");
+	std::string category = qr.rs->getString("category");
+	bool is_available = qr.rs->getBoolean("is_availabe");
+	MenuItem menu_item(id, name, price, category, is_available);
+	return menu_item;
+}
+
 std::vector<MenuItem> MenuItem::getAllMenuItems()
 {
 	auto& db = Database::getDB();
