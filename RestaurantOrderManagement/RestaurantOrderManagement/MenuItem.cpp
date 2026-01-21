@@ -34,7 +34,6 @@ MenuItem MenuItem::getMenuItemById(std::string id)
 	{
 		throw std::runtime_error("MenuItem not found");
 	}
-	std::string id = qr.rs->getString("item_id");
 	std::string name = qr.rs->getString("item_name");
 	float price = qr.rs->getDouble("price");
 	std::string category = qr.rs->getString("category");
