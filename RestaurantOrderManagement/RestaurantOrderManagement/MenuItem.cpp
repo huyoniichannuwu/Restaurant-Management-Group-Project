@@ -4,7 +4,7 @@ MenuItem::MenuItem(const std::string& item_id, const std::string& item_name, con
 	const std::string& category, bool is_available) :
 	item_id(item_id), item_name(item_name), price(price), category(category), is_available(is_available){}
 
-//cac phuong thuc get
+//all get method
 std::string MenuItem::getItemId() const
 {
 	return this->item_id;
@@ -46,7 +46,7 @@ std::vector<MenuItem> MenuItem::getAllMenuItems()
 /////////////////
 
 
-//cac phuong thuc set
+//all set method
 void MenuItem::setName(const std::string& name)
 {
 	this->item_name = name;
