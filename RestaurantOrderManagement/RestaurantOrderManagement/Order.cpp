@@ -6,12 +6,12 @@ std::string Order::generateOrderItemId() {
 	std::ostringstream oss; //string id format
 	oss << "OM";
 	oss << std::setw(3);
-	oss << std::setfill(0);
+	oss << std::setfill('0');
 	oss << next_item_no++;
 	return oss.str();
 }
 
-Order::Order(int table_number, const std::string& customer_name, const std::string& note = ""):
+Order::Order(int table_number, const std::string& customer_name, const std::string& note):
 	order_id(0), table_number(table_number), order_time(std::chrono::system_clock::now()), status(OrderStatus::CREATED),
 	total_amount(0.0), note(note), customer_name(customer_name),next_item_no(1){}
 
