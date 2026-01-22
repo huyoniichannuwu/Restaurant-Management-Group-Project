@@ -8,7 +8,7 @@ void printLine(char c, const int width)
 
 
 
-void printMenu(std::vector<MenuItem> menu_list)
+void printMenu(const std::vector<MenuItem>& menu_list)
 {
 	printLine('-');
 	std::cout << std::setw(50) << "MENU" << std::endl;
@@ -28,7 +28,7 @@ void printMenu(std::vector<MenuItem> menu_list)
 			<< std::setw(35) << menu_list[i].getItemName()
 			<< std::setw(15) << menu_list[i].getPrice()
 			<< std::setw(15) << menu_list[i].getCategory()
-			<< std::setw(10) << menu_list[i].isAvailable()
+			<< std::setw(10) << (menu_list[i].isAvailable() ? "Yes": "No")
 			<< std::endl;
 	}
 }
@@ -44,7 +44,7 @@ void loginScreen()
 	printLine('-');
 }
 
-void printOrderMenu(std::vector<Order> order_list)
+void printOrderMenu(const std::vector<Order>& order_list)
 {
 	printLine('=');
 	std::cout << std::setw(50) << "CURRENT ORDERS LIST" << std::endl;
