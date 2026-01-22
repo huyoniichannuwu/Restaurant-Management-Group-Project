@@ -21,8 +21,11 @@ Order Waiter::createOrder(int table_number, std::string customer_name, std::stri
 	stmt->setString(3, note);
 	stmt->setString(4, enumToString(order.getStatus()));
 	stmt->setDouble(5, 0.0);
-	stmt->execute();
 
+	int affected = stmt->executeUpdate();
+	if (affected != 1) {
+		throw std::runtime_error("createOrder failed");
+	}
 
 	int order_id = db.getLastInsertOrderId();
 	order.setOrderId(order_id);
