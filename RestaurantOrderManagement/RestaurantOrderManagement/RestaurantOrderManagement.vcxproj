@@ -141,6 +141,7 @@
     <ClCompile Include="Cashier.cpp" />
     <ClCompile Include="Invoice.cpp" />
     <ClCompile Include="PaymentStatus.cpp" />
+    <ClCompile Include="InventoryItemMenu.cpp" />
     <ClCompile Include="Waiter.cpp" />
     <ClCompile Include="Staff.cpp" />
   </ItemGroup>
