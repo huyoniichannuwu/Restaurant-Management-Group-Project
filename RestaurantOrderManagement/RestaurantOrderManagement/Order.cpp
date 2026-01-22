@@ -260,37 +260,58 @@ Order Order::create(int table_number, std::string note, std::string customer_nam
 void Order::removeOrderItem(std::string order_item_id)
 {
 	auto& db = Database::getDB();
-	auto stmt = db.prepare("Delete from OrderItem where order_item_id = ? and order_id = ?");
+	auto stmt = db.prepare(
+		"DELETE FROM OrderItem WHERE order_item_id = ? AND order_id = ?"
+	);
+
 	stmt->setString(1, order_item_id);
 	stmt->setInt(2, this->order_id);
-	stmt->execute();
+
+	int affected = stmt->executeUpdate();
+	if (affected != 1) {
+		throw std::runtime_error("removeOrderItem failed: item not found");
+	}
 }
+
 
 void Order::addOrderItem(const MenuItem& menu_item, int quantity)
 {
-	std::string order_item_id = generateOrderItemId();
-	OrderItem order_item = OrderItem::create(order_item_id, menu_item, quantity);
-	auto& db = Database::getDB();
-	auto stmt = db.prepare(
-		"Insert into OrderItem (order_item_id, order_item_name, quantity, price, order_id, item_id) "
-		"values (?,?,?,?,?,?)"
-	);
-	stmt->setString(1, order_item_id);
-	stmt->setString(2, menu_item.getItemName());
-	stmt->setInt(3, quantity);
-	stmt->setDouble(4, menu_item.getPrice());
-	stmt->setInt(5, this->order_id);
-	stmt->setString(6, menu_item.getItemId());
-	stmt->execute();
+    std::string order_item_id = generateOrderItemId();
+    OrderItem order_item = OrderItem::create(order_item_id, menu_item, quantity);
+
+    auto& db = Database::getDB();
+    auto stmt = db.prepare(
+        "INSERT INTO OrderItem "
+        "(order_item_id, order_item_name, quantity, price, order_id, item_id) "
+        "VALUES (?, ?, ?, ?, ?, ?)"
+    );
+    stmt->setString(1, order_item_id);
+    stmt->setString(2, menu_item.getItemName());
+    stmt->setInt(3, quantity);
+    stmt->setDouble(4, menu_item.getPrice());
+    stmt->setInt(5, this->order_id);
+    stmt->setString(6, menu_item.getItemId());
+    int affected = stmt->executeUpdate();
+    if (affected != 1) {
+        throw std::runtime_error("addOrderItem failed");
+    }
 }
+
 
 
 void Order::updateOrderItemQuantity(std::string order_item_id, int quantity)
 {
 	auto& db = Database::getDB();
-	auto stmt = db.prepare("update OrderItem set quantity = ? where order_id = ? and order_item_id = ?");
+	auto stmt = db.prepare(
+		"UPDATE OrderItem SET quantity = ? WHERE order_id = ? AND order_item_id = ?"
+	);
+
 	stmt->setInt(1, quantity);
 	stmt->setInt(2, this->order_id);
 	stmt->setString(3, order_item_id);
-	stmt->execute();
+
+	int affected = stmt->executeUpdate();
+	if (affected != 1) {
+		throw std::runtime_error("updateOrderItemQuantity failed: item not found");
+	}
 }
