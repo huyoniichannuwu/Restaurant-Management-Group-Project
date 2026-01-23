@@ -12,11 +12,7 @@ int main()
 		std::cout << "Please enter your choice: "; std::cin >> choice_logging_screen;
 		if (choice_logging_screen == '1')
 		{
-			bool customer_screen = true;
-			do
-			{
-				printMenu(menu_list);
-			} while (customer_screen == true);
+			showMenuScreen();
 		}
 
 

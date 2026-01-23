@@ -138,3 +138,40 @@ void printStaffList(std::vector<Staff> staff_list)
 	}
 	printLine('-');
 }
+
+//all screen method
+void showMenuScreen()
+{
+	auto menu_list = MenuItem::getAllMenuItems();
+	bool menu_screen = true;
+	do
+	{
+		printMenu(menu_list);
+		std::cout << "[0] Logout\t"
+			<< "[1] view only main dish\t"
+			<< "[2] view only drink\n"
+			<< "[3] view only side dish\n";
+		int choice;
+		std::cout << "Your choice: ";
+		std::cin >> choice;
+		switch (choice)
+		{
+		case 0:
+			menu_screen = false;
+			break;
+		case 1:
+			printMenu(menu_list, true, "Main dish");
+			break;
+		case 2:
+			printMenu(menu_list, true, "Drink");
+			break;
+		case 3:
+			printMenu(menu_list, true, "Side dish");
+			break;
+		default:
+			std::cout << "Incorrect choice, please choose only 1-3";
+			break;
+		}
+
+	} while (menu_screen == true);
+}

@@ -4,11 +4,12 @@
 #include "KitchenStaff.h"
 //#include "Manager.h"
 
-
+//all print function
 void printLine(char c, const int width = 75);
-void printMenu(const std::vector<MenuItem>& menu_list, bool filter = false, std::string category);
+void printMenu(const std::vector<MenuItem>& menu_list, bool filter = false, std::string category ="");
 void loginScreen();
 void printOrderMenu(const std::vector<Order>& order_list);
 void printOrder(Order order, Staff staff, std::vector<OrderItem> order_item_list);
 void printOrderItemList(std::vector<OrderItem> order_item_list);
 void printStaffList(std::vector<Staff> staff_list);
+void showMenuScreen();//this will call print menu function
