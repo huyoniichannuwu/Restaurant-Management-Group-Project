@@ -18,8 +18,12 @@ int main()
 			std::string username; std::string password;
 			std::cout << "Staff ID:"; std::cin >> username;
 			std::cout << "password:"; std::cin >> password;
-			if (Staff::login(username, hashPassword(password))) std::cout << "thanh cong";
-			else std::cout << "wrong pass";
+			if (Staff::login(username, hashPassword(password)))
+			{
+				Staff staff(username,)
+				std::cout << "thanh cong";
+			}
+			else std::cout << "wrong pass"<<std::endl;
 		}
 
 

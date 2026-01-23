@@ -13,3 +13,4 @@
 #include <sstream>
 #include <iomanip>
 #include <openssl/sha.h>
+#include <optional>

@@ -6,13 +6,27 @@ Staff::Staff(const std::string& staff_id, const std::string& staff_name, const s
 {
 }
 
-bool Staff::login(const std::string& staff_id, const std::string& password)
+std::optional<Staff> Staff::login(const std::string& staff_id, const std::string& hashed_password) //return an object instead of bool
 {
-	auto& db = Database::getDB();
-	auto qr = db.select("Select password from Staff where staff_id = '" + staff_id+"'");
-	if (!(qr.rs->next())) return false; //wrong staff_id
-	return password == qr.rs->getString("password"); //input password is a crypted password
-}
+    auto& db = Database::getDB();
+    auto qr = db.select(
+        "SELECT staff_id, staff_name, role, phone, password "
+        "FROM Staff WHERE staff_id = '" + staff_id + "'"
+    );
+
+    if (!qr.rs->next())
+        return std::nullopt;   //wrong id
+
+    if (hashed_password != qr.rs->getString("password"))
+        return std::nullopt;   //wrong password
+
+    std::string staff_id = qr.rs->getString("staff_id");
+    std::string staff_name = qr.rs->getString("staff_name");
+    std::string role = qr.rs->getString("role");
+    std::string phone = qr.rs->getString("phone");
+    Staff staff(staff_id, staff_name, hashed_password, phone, role);
+
+    return staff;
 
 //all get method
 std::string Staff::getName() const
