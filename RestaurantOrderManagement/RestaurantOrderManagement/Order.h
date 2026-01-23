@@ -1,6 +1,10 @@
 #include "OrderItem.h"
 #include "OrderStatus.h"
 #include "MenuItem.h"
+#include "Staff.h"
+#include "InventoryItem.h"
+#include "InventoryItemMenu.h"
+
 #pragma once
 //enum status
 

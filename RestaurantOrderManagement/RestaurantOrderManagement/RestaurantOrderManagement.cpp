@@ -18,13 +18,31 @@ int main()
 				printMenu(menu_list);
 			} while (customer_screen == true);
 		}
-		else if(choice_logging_screen == '3')
+
+
+
+
+		else if (choice_logging_screen == '2')
+		{
+
+		}
+
+
+
+
+
+
+
+
+
+
+
+		else if (choice_logging_screen == '3')
 		{
 			logging_screen = false;
 		}
+		else std::cout << "Wrong choice, please enter from (1-3)"<<std::endl;
 		
-		
-
 	} while (logging_screen == true);
 	return 0;
 }

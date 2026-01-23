@@ -1,6 +1,5 @@
 #pragma once
 #include "Invoice.h"
-#include "Staff.h"
 
 class Cashier: public Staff
 {

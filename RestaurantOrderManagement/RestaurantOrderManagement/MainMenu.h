@@ -1,6 +1,9 @@
 #pragma once
-#include "Order.h"
-#include "Staff.h"
+#include "Cashier.h"
+#include "Waiter.h"
+#include "KitchenStaff.h"
+//#include "Manager.h"
+
 
 void printLine(char c, const int width = 75);
 void printMenu(const std::vector<MenuItem>& menu_list);
