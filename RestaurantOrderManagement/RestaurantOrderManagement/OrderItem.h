@@ -12,6 +12,8 @@ public:
 	OrderItem(const std::string& order_item_id,const std::string& order_item_aname,const int quantity,const float price);
 	static OrderItem create(const std::string& order_item_id,const MenuItem& menu_item, int quantity);
 	int getItemNo() const;
-	std::string getOrderItemName();
+	std::string getOrderItemName() const;
+	int getQuantity() const;
+	float getPrice() const;
 	float calculateCost() const;
 };

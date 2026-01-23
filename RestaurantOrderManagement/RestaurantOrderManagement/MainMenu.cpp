@@ -66,6 +66,20 @@ void printOrderMenu(const std::vector<Order>& order_list)
 	}
 }
 
+//print all order_item in a order
+void printOrderItemList(std::vector<OrderItem> order_item_list)
+{
+	for (int i = 0; i < order_item_list.size(); i++)
+	{
+		std::cout << std::left
+			<< std::setw(35) << order_item_list[i].getOrderItemName()
+			<< std::setw(15) << order_item_list[i].getQuantity()
+			<< std::setw(12) << order_item_list[i].getPrice()
+			<< std::setw(20) << order_item_list[i].calculateCost()
+			<< std::endl;
+	}
+}
+
 //print when waiter or chef or cashier view order 
 void printOrder(Order order, Staff staff, std::vector<OrderItem> order_item_list)
 {
@@ -87,19 +101,37 @@ void printOrder(Order order, Staff staff, std::vector<OrderItem> order_item_list
 		<< std::setw(12) << "Price(VND)"
 		<< std::setw(20) << "Subtotal"
 		<< std::endl;
+
+	printLine('-');
+	printOrderItemList(order_item_list);
 	printLine('-');
 
-	for (int i = 0; i < order_item_list.size(); i++)
+	std::cout << std::left << "TOTAL AMOUNT:" << std::right << order.getTotalAmount()<<std::endl;
+	printLine('-');
+}
+
+//print all staff currently in restaurant
+void printStaffList(std::vector<Staff> staff_list)
+{
+	printLine('=');
+	std::cout << std::setw(50) << "STAFF MANAGEMENT" << std::endl;
+	printLine('=');
+
+	std::cout << std::left
+		<< std::setw(6) << "ID"
+		<< std::setw(35) << "Name"
+		<< std::setw(12) << "Phone"
+		<< std::setw(20) << "Role"
+		<< std::endl;
+	printLine('-');
+
+	for (int i = 0; i < staff_list.size(); i++)
 	{
 		std::cout << std::left
-			<< std::setw(35) << order_item_list[i].calculateCost()
-			<< std::setw(15) << order_list[i].getTableNumber()
-			<< std::setw(12) << enumToString(order_list[i].getStatus())
-			<< std::setw(20) << order_list[i].getNote()
+			<< std::setw(6) << staff_list[i].getName();
+			<< std::setw(35) << "Name"
+			<< std::setw(12) << "Phone"
+			<< std::setw(20) << "Role"
 			<< std::endl;
 	}
-
-
 }
-//void printOrderItemList(std::vector<OrderItem> order_item_list);
-//void printStaffList(std::vector<Staff> staff_list);

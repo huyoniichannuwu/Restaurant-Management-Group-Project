@@ -14,12 +14,23 @@ bool Staff::login(std::string& staff_id, std::string& password)
 	return password == qr.rs->getString("password"); //input password is a crypted password
 }
 
-std::string Staff::getName()
+//all get method
+std::string Staff::getName() const
 {
 	return this->staff_name;
 }
 
-std::string Staff::getRole()
+std::string Staff::getRole() const
 {
 	return this->role;
+}
+
+std::string Staff::getId() const
+{
+	return this->staff_id;
+}
+
+std::string Staff::getPhone() const
+{
+	return this->phone
 }

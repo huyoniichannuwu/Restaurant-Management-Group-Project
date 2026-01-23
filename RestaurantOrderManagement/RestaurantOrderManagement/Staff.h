@@ -11,9 +11,11 @@ private:
 public:
 	Staff(const std::string& staff_id,const std::string& staff_name,const std::string& password,const std::string& phone,const std::string& role);
 	~Staff() = default;
-	std::string getName();
+	std::string getName() const;
+	std::string getId() const;
+	std::string getPhone() const;
 	//kiem tra lai login
 	static bool login(std::string& staff_id, std::string& password);
-	std::string getRole();
+	std::string getRole() const;
 };
 

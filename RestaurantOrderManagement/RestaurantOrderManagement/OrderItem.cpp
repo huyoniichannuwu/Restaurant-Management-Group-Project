@@ -28,7 +28,16 @@ int OrderItem::getItemNo() const
 	return std::stoi(order_item_id.substr(2)); //convert string to int
 }
 
-std::string OrderItem::getOrderItemName()
+std::string OrderItem::getOrderItemName() const
 {
 	return this->order_item_name;
+}
+
+int OrderItem::getQuantity() const
+{
+	return this->quantity;
+}
+float OrderItem::getPrice() const
+{
+	return this->price;
 }
