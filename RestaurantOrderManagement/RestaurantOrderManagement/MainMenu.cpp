@@ -200,3 +200,25 @@ void showMenuScreen()
 
 	} while (menu_screen == true);
 }
+
+
+
+//order screen of waiter
+void showOrderWaiter(Waiter waiter)
+{
+	std::vector<Order> order_list = waiter.viewActiveOrder(); //get order list that only waiter see
+	bool waiter_screen = true; char waiter_choice;
+	do
+	{
+		printOrderMenu(order_list);
+		std::cout << "[N] New Order\t"
+			<< "[V] View Detail(Input ID)\t"
+			<< "[0] logout\n";
+		std::cout << "Choice: "; std::cin >> waiter_choice;
+		if (waiter_choice == '0')
+		{
+			waiter_screen = false;
+		}
+
+	} while (waiter_screen == true);
+}

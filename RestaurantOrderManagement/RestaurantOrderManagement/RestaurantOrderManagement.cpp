@@ -18,22 +18,24 @@ int main()
 			std::string username; std::string password;
 			std::cout << "Staff ID:"; std::cin >> username;
 			std::cout << "password:"; std::cin >> password;
-			if (Staff::login(username, hashPassword(password)))
+			auto staffOpt = Staff::login(username, hashPassword(password));
+
+			if (staffOpt)
 			{
-				Staff staff(username,)
-				std::cout << "thanh cong";
+				Staff staff = *staffOpt;
+				std::cout << "Welcome, " << staff.getName() << "! Role:"<<staff.getRole()<<std::endl;
+				if (staff.getRole() == "Waiter")
+				{
+					Waiter waiter(staff.getId(),staff.getName(),staff.getPassword(),staff.getPhone());
+					showOrderWaiter(waiter);
+				}
+
 			}
-			else std::cout << "wrong pass"<<std::endl;
+			else
+			{
+				std::cout << "Wrong password or ID, please enter again.\n";
+			}
 		}
-
-
-
-
-
-
-
-
-
 
 
 		else if (choice_logging_screen == '3')

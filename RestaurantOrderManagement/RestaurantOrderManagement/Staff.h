@@ -14,6 +14,7 @@ public:
 	std::string getName() const;
 	std::string getId() const;
 	std::string getPhone() const;
+	std::string getPassword() const;
 	//kiem tra lai login
 	static std::optional<Staff> login(const std::string& staff_id,const std::string& hashed_password);
 	std::string getRole() const;

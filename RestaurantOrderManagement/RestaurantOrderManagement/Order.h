@@ -38,6 +38,7 @@ public:
 	void addOrderItem(const MenuItem& menu_item, int quantity);
 	void removeOrderItem(std::string order_item_id);
 	void updateOrderItemQuantity(std::string order_item_id, int quantity);
+	static bool isTableOccupied(int table_number);
 	void cancel();
 	void sendToKitchen();
 	void markPreparing();

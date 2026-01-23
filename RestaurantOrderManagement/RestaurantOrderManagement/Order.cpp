@@ -79,7 +79,7 @@ std::vector<OrderItem> Order::getOrderItems() const
 {
 	auto& db = Database::getDB();
 	std::vector<OrderItem> order_item_list;
-	auto qr = db.select("Select order_item_id,order_item_name quantity, price from OrderItem where order_id =" + std::to_string(this->order_id));
+	auto qr = db.select("Select order_item_id,order_item_name, quantity, price from OrderItem where order_id =" + std::to_string(this->order_id));
 	while (qr.rs->next())
 	{
 		std::string id = qr.rs->getString("order_item_id");
@@ -326,4 +326,17 @@ void Order::updateOrderItemQuantity(std::string order_item_id, int quantity)
 	if (affected != 1) {
 		throw std::runtime_error("updateOrderItemQuantity failed: item not found");
 	}
+}
+
+bool Order::isTableOccupied(int table_number)
+{
+	auto& db = Database::getDB();
+	auto qr = db.select(
+		"SELECT COUNT(*) AS cnt FROM OrderTable "
+		"WHERE table_number = " + std::to_string(table_number) +
+		" AND status IN ('CREATED','PENDING','PREPARING','READY')"
+	);
+
+	qr.rs->next();
+	return qr.rs->getInt("cnt") > 0;
 }

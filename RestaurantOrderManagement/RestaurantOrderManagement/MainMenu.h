@@ -19,3 +19,4 @@ void printStaffList(std::vector<Staff> staff_list);
 
 //showScreen function
 void showMenuScreen();//this will call print menu function
+void showOrderWaiter(Waiter waiter);

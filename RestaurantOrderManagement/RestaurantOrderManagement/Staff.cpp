@@ -20,11 +20,11 @@ std::optional<Staff> Staff::login(const std::string& staff_id, const std::string
     if (hashed_password != qr.rs->getString("password"))
         return std::nullopt;   //wrong password
 
-    std::string staff_id = qr.rs->getString("staff_id");
+    std::string id = qr.rs->getString("staff_id");
     std::string staff_name = qr.rs->getString("staff_name");
     std::string role = qr.rs->getString("role");
     std::string phone = qr.rs->getString("phone");
-    Staff staff(staff_id, staff_name, hashed_password, phone, role);
+    Staff staff(id, staff_name, hashed_password, phone, role);
 
     return staff;
 }
@@ -43,6 +43,11 @@ std::string Staff::getRole() const
 std::string Staff::getId() const
 {
 	return this->staff_id;
+}
+
+std::string Staff::getPassword() const
+{
+    return this->password;
 }
 
 std::string Staff::getPhone() const
