@@ -328,6 +328,7 @@ void Order::removeOrderItem(std::string order_item_id)
 	if (affected != 1) {
 		throw std::runtime_error("removeOrderItem failed: item not found");
 	}
+	recalculateTotalAmount();
 }
 
 
@@ -352,6 +353,7 @@ void Order::addOrderItem(const MenuItem& menu_item, int quantity)
     if (affected != 1) {
         throw std::runtime_error("addOrderItem failed");
     }
+	recalculateTotalAmount();
 }
 
 
@@ -371,6 +373,7 @@ void Order::updateOrderItemQuantity(std::string order_item_id, int quantity)
 	if (affected != 1) {
 		throw std::runtime_error("updateOrderItemQuantity failed: item not found");
 	}
+	recalculateTotalAmount();
 }
 
 bool Order::isTableOccupied(int table_number)
