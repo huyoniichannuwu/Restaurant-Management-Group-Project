@@ -123,15 +123,16 @@ void printStaffList(std::vector<Staff> staff_list)
 		<< std::setw(12) << "Phone"
 		<< std::setw(20) << "Role"
 		<< std::endl;
-	printLine('-');
 
+	printLine('-');
 	for (int i = 0; i < staff_list.size(); i++)
 	{
 		std::cout << std::left
-			<< std::setw(6) << staff_list[i].getName();
-			<< std::setw(35) << "Name"
-			<< std::setw(12) << "Phone"
-			<< std::setw(20) << "Role"
+			<< std::setw(6) << staff_list[i].getId()
+			<< std::setw(35) << staff_list[i].getName()
+			<< std::setw(12) << staff_list[i].getPhone()
+			<< std::setw(20) << staff_list[i].getRole()
 			<< std::endl;
 	}
+	printLine('-');
 }
