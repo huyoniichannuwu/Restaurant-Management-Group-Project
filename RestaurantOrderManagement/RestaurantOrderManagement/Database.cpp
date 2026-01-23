@@ -19,7 +19,6 @@ Database::Database(const std::string& config_path)
 		driver = get_driver_instance();
 		con = driver->connect(host, username, password);
 		con->setSchema(schema);
-		std::cout << "Thanh cong";
 	}
 	catch (sql::SQLException& E)
 	{
