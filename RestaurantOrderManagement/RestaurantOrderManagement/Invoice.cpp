@@ -3,9 +3,13 @@
 
 // convert time to string DateTime MySQL (YYYY-MM-DD HH:MM:SS)
 std::string timePointToString(std::chrono::system_clock::time_point time) {
-    std::time_t t = std::chrono::system_clock::to_time_t(time);
+    std::time_t tt = std::chrono::system_clock::to_time_t(time);
+
+    std::tm local_tm{};
+    localtime_s(&local_tm, &tt);
+
     std::stringstream ss;
-    ss << std::put_time(std::localtime(&t), "%Y-%m-%d %H:%M:%S");
+    ss << std::put_time(&local_tm, "%Y-%m-%d %H:%M");
     return ss.str();
 }
 

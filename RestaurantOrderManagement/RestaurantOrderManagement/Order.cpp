@@ -120,9 +120,10 @@ Order Order::getOrderById(int order_id) //use to find an order with order_id
 std::string Order::getOrderTimeFormatted() const 
 {
 	std::time_t tt = std::chrono::system_clock::to_time_t(order_time);
-	std::tm* local_tm = std::localtime(&tt);
+	std::tm local_tm{};
+	localtime_s(&local_tm, &tt);
 	std::stringstream ss;
-	ss << std::put_time(local_tm, "%Y-%m-%d %H:%M");
+	ss << std::put_time(&local_tm, "%Y-%m-%d %H:%M");
 	return ss.str();
 }
 //////////////////////////////

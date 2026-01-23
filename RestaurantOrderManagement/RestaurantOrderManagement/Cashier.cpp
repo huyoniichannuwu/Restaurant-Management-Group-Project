@@ -31,16 +31,16 @@ std::vector<Order> Cashier::viewCompletedOrders()
 			Order order(order_id, table_num, order_time, status, total_amount, note, cus_name);
 			order_list.push_back(order);
 		}
+		return order_list;
 	}
 	catch (sql::SQLException& e) {
 		std::cout << "Error viewing orders: " << e.what() << std::endl;
 	}
-	return order_list;
 }
 
-void Cashier::ProcessPayment(Invoice invoice) {
+void Cashier::ProcessPayment(Order order,Invoice invoice) {
 	invoice.markPaid();
 	std::cout << "Da thanh toan thanh cong cho Hoa Don cua Order ID: "
-		<< invoice.getOrderId() // Gi? ??nh Invoice có getter này
-		<< " voi so tien: " << invoice.getTotalPrice() << std::endl;
+		<< invoice.getOrderId()
+		<< " voi so tien: " << invoice.calculateTotal(order) << std::endl;
 }

@@ -32,5 +32,5 @@ std::string Staff::getId() const
 
 std::string Staff::getPhone() const
 {
-	return this->phone
+	return this->phone;
 }
