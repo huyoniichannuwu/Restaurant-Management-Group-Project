@@ -41,7 +41,7 @@ public:
 	static bool isTableOccupied(int table_number); //check if a table is in used
 	void cancel();
 	void sendToKitchen();
-	void markPreparing(const Staff& staff);
+	void markPreparing(const std::string& staff_id);
 	void markReady();
 	void markCompleted();
 	static Order create(int table_number, std::string note, std::string customer_name);

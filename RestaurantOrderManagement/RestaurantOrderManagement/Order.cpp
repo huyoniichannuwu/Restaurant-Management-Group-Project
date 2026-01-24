@@ -194,7 +194,7 @@ void Order::sendToKitchen()
 
 
 //when kitchenstaff press prepaing, deduct automatically
-void Order::markPreparing(const Staff& staff)
+void Order::markPreparing(const std::string staff_id)
 {
 	auto& db = Database::getDB();
 	auto items = getOrderItems();
@@ -244,7 +244,7 @@ void Order::markPreparing(const Staff& staff)
 			);
 			stmt->setString(1, enumToString(OrderStatus::PREPARING));
 			stmt->setInt(2, this->order_id);
-			stmt->setString(3, staff.getId());
+			stmt->setString(3, staff_id);
 
 			if (stmt->executeUpdate() != 1)
 				throw std::runtime_error("Failed to update StaffOrder");
