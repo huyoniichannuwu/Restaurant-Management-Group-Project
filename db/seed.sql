@@ -75,4 +75,5 @@ INSERT INTO StaffOrder VALUES
 ('S0004',NOW(),'PREPARING',3),
 ('S0004',NOW(),'READY',4);
 
-select * from inventoryitem;
+select * from Invoice;
+select * from OrderTable;
