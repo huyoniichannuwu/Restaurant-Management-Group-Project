@@ -443,12 +443,25 @@ void orderModifyCashier(Order& order, Staff staff, Cashier cashier)
 		{
 			char confirm;; float total_amount;
 			float total = order.getTotalAmount();
-			std::cout << "Amount received: "; std::cin >> total_amount;
+			bool retry = false;
+
+			do //check if customer give enough money
+			{
+				retry = false;
+				std::cout << "Amount received: "; std::cin >> total_amount;
+				if (total_amount < total)
+				{
+					std::cout << "Not enough money, please input again";
+					std::cin >> total_amount;
+					retry = true;
+				}
+			} while (retry == true);
+
 			std::cout << "change: " << (total_amount - total); //how much money cashier will return to customer
 			std::cout << "Confirm ? y/n"; std::cin >> confirm;
 			if (confirm == 'y' || confirm == 'Y')
 			{
-				Invoice invoice = Invoice::generate(order); //generate invoice of this order
+				Invoice invoice = Invoice::generate(order,cashier); //generate invoice of this order
 				cashier.ProcessPayment(order, invoice);
 			}
 			else

@@ -16,7 +16,7 @@ std::string timePointToString(std::chrono::system_clock::time_point time) {
 }
 
 
-Invoice Invoice::generate(const Order& order) {
+Invoice Invoice::generate(const Order& order, Cashier cashier) {
     Invoice inv;
     inv.order_id = order.getOrderId();       
     inv.total_price = order.getTotalAmount();
@@ -26,13 +26,14 @@ Invoice Invoice::generate(const Order& order) {
     try {
         auto& db = Database::getDB();
         std::unique_ptr<sql::PreparedStatement> pstmt = db.prepare(
-            "INSERT INTO Invoice (order_id, issue_date, invoice_status, total_price) VALUES (?, ?, ?, ?)"
+            "INSERT INTO Invoice (order_id, issue_date, invoice_status, total_price, staff_id) VALUES (?, ?, ?, ?, ?)"
         );
 
         pstmt->setInt(1, inv.order_id);
         pstmt->setString(2, timePointToString(inv.issue_date));
         pstmt->setString(3, paymentStatusToString(inv.payment_status));
         pstmt->setDouble(4, inv.total_price);
+        pstmt->setString(5, cashier.getId());
 
         pstmt->executeUpdate();
     }
