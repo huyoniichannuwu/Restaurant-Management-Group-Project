@@ -382,7 +382,7 @@ bool Order::isTableOccupied(int table_number)
 	auto qr = db.select(
 		"SELECT COUNT(*) AS cnt FROM OrderTable "
 		"WHERE table_number = " + std::to_string(table_number) +
-		" AND status IN ('CREATED','PENDING','PREPARING','READY')"
+		" AND order_status IN ('CREATED','PENDING','PREPARING','READY')"
 	);
 
 	qr.rs->next();
