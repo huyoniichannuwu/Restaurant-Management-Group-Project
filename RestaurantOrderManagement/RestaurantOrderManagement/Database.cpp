@@ -79,3 +79,9 @@ int Database::getLastInsertOrderId() const
 	}
 	throw std::runtime_error("Failed to get last insert id");
 }
+
+void Database::execute(const std::string& sql)
+{
+	std::unique_ptr<sql::Statement> stmt(con->createStatement());
+	stmt->execute(sql);
+}

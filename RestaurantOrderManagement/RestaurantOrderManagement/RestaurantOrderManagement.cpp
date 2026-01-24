@@ -17,23 +17,29 @@ int main()
 		{
 			std::string username; std::string password;
 			std::cout << "Staff ID:"; std::cin >> username;
-			std::cout << "password:"; std::cin >> password;
+			std::cout << "password:"; password = inputPassword(password);
 			auto staffOpt = Staff::login(username, hashPassword(password));
 
 			if (staffOpt)
 			{
 				Staff staff = *staffOpt;
 				std::cout << "Welcome, " << staff.getName() << "! Role:"<<staff.getRole()<<std::endl;
+
 				if (staff.getRole() == "Waiter")
 				{
 					Waiter waiter(staff.getId(),staff.getName(),staff.getPassword(),staff.getPhone());
-					showOrderWaiter(staff,waiter);
+					showOrderWaiter(staff,waiter);//call waiter function
+				}
+				else if (staff.getRole() == "KitchenStaff")
+				{
+					KitchenStaff kitchen(staff.getId(), staff.getName(), staff.getPassword(), staff.getPhone());
+					showOrderKitchenStaff(staff, kitchen);//call kitchen staff function
 				}
 
 			}
 			else
 			{
-				std::cout << "Wrong password or ID, please enter again.\n";
+				std::cout << "Wrong password or ID, please try again.\n";
 			}
 		}
 

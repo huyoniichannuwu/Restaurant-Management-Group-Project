@@ -3,12 +3,7 @@
 //title setw(50)
 
 
-void printLine(char c, const int width)
-{
-	std::cout << std::string(width, c) << std::endl; // use string to set default line
-}
-
-
+//all function about password
 std::string hashPassword(const std::string& password) 
 {
 	unsigned char hash[SHA256_DIGEST_LENGTH];
@@ -25,6 +20,42 @@ std::string hashPassword(const std::string& password)
 	}
 	return ss.str();
 }
+
+
+std::string inputPassword(std::string& password)
+{
+	std::string password = "";
+	char ch;
+	while (true)
+	{
+		ch = _getch();
+		if (ch == 13) break; //this is when user input enter
+
+		else if (ch == 8) //when user input backspace
+		{
+			if (password.length() > 0)
+			{
+				password.pop_back();
+				std::cout << "\b \b"; //delete *
+			}
+
+		}
+		else
+		{
+			password += ch;
+			std::cout << "*";
+		}
+	}
+	return password;
+}
+
+
+//all print function
+void printLine(char c, const int width)
+{
+	std::cout << std::string(width, c) << std::endl; // use string to set default line
+}
+
 
 
 void printMenu(const std::vector<MenuItem>& menu_list, bool filter, std::string category)
@@ -160,6 +191,8 @@ void printStaffList(std::vector<Staff> staff_list)
 }
 
 //all screen method
+
+//showmenuscreen function
 void showMenuScreen()
 {
 	auto menu_list = MenuItem::getAllMenuItems();
@@ -202,8 +235,8 @@ void showMenuScreen()
 }
 
 
-//order modify screen
-void orderModify(Order& order,Staff staff)
+//order modify screen which will be called in showOrderWaiter
+void orderModifyWaiter(Order& order,Staff staff)
 {
 	bool modify_order = true;
 	do
@@ -382,6 +415,57 @@ void orderModify(Order& order,Staff staff)
 
 
 
+void orderModifyKitchenStaff(Order& order, Staff staff) //called by showOrderKitchenStaff
+{
+	bool modify_order = true;
+	do
+	{
+		std::vector<OrderItem> order_item_list = order.getOrderItems();
+		printOrder(order, staff, order_item_list);
+		std::cout << "[V] View Menu\t"
+			<< "[A] Set Preparing\t"
+			<< "[S] Set Ready\t"
+			<< "[B] Back\n";
+		char choice;
+		std::cout << "choice: "; std::cin >> choice;
+
+			if (choice == 'V' || choice == 'v')
+			{
+				showMenuScreen();
+			}
+
+			else if (choice == 'A' || choice == 'a')
+			{
+				char confirm;
+				std::cout << "Confirm set to preapring ? y/n"; std::cin >> confirm;
+				if (confirm == 'y') order.markPreparing();
+				else continue;
+			}
+
+			else if (choice == 'S' || choice == 's')
+			{
+				char confirm;
+				std::cout << "Are you sure this order is ready ? y/n"; std::cin >> confirm;
+				if (confirm == 'y') order.markReady();
+				else continue;
+			}
+
+			else if (choice == 'B' || choice == 'b')
+			{
+				modify_order = false;
+			}
+
+	} while (modify_order == true);
+}
+
+
+
+
+
+
+
+
+
 //order screen of waiter
 void showOrderWaiter(Staff staff,Waiter waiter)
 {
@@ -413,7 +497,7 @@ void showOrderWaiter(Staff staff,Waiter waiter)
 
 			//when create order, waiter will view that order to modify
 			Order order = Order::create(table_number, note, customer_name);
-			orderModify(order, staff);
+			orderModifyWaiter(order, staff);
 			
 		}
 
@@ -425,7 +509,7 @@ void showOrderWaiter(Staff staff,Waiter waiter)
 			try
 			{
 				Order modify_order = Order::getOrderById(id);
-				orderModify(modify_order, staff);
+				orderModifyWaiter(modify_order, staff);
 			}
 			catch (const std::runtime_error& e)
 			{
@@ -438,6 +522,50 @@ void showOrderWaiter(Staff staff,Waiter waiter)
 		{
 			waiter_screen = false;
 		}
+		else
+		{
+			std::cout << "Wrong input, please input what is showed on the screen, try again"<<std::endl;
+		}
 
 	} while (waiter_screen == true);
+}
+
+
+
+//show screen of kitchenstaff
+void showOrderKitchenStaff(Staff staff, KitchenStaff kitchen_staff)
+{
+	std::vector<Order> order_list = kitchen_staff.viewPendingOrders();
+	bool kitchen_screen = true;
+	do
+	{
+		printOrderMenu(order_list);
+		std::cout << "[V] View Detail(Input ID)\t" << "[0] logout\n";
+		char choice;
+		std::cout << "Choice: "; std::cin >> choice;
+		if (choice == 'V' || choice == 'v')
+		{
+			try
+			{
+				int id;
+				std::cout << "Enter order id: "; std::cin >> id;
+				Order order = Order::getOrderById(id);
+				orderModifyKitchenStaff(order, staff);
+			}
+			catch(std::runtime_error& e)
+			{
+				std::cout << e.what() << std::endl;
+			}
+		}
+
+		else if (choice == '0')
+		{
+			kitchen_screen = false;
+		}
+		else
+		{
+			std::cout << "Wrong input, please input what is showed on the screen, try again" << std::endl;
+		}
+
+	} while (kitchen_screen == true);
 }

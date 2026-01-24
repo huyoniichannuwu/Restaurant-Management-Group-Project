@@ -24,4 +24,5 @@ public:
     QueryResult select(const std::string& sql);
     std::unique_ptr<sql::PreparedStatement> prepare(const std::string& sql);
     int getLastInsertOrderId() const;
+    void execute(const std::string& sql);
 };

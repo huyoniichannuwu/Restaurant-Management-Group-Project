@@ -1,6 +1,10 @@
 #include "InventoryItem.h"
 #include "Database.h"
 
+InventoryItem::InventoryItem(const std::string& inventory_id) :
+    inventory_id(inventory_id){}
+
+
 void InventoryItem::deductQuantity(float amount)
 {
     if (amount <= 0) {

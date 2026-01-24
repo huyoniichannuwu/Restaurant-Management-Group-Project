@@ -5,9 +5,7 @@ class InventoryItem
 {
 private:
 	std::string inventory_id;
-	std::string item_name;
-	float quantity;
-	std::string unit;
 public:
+	InventoryItem(const std::string& inventory_id);
 	void deductQuantity(float amount);
 };

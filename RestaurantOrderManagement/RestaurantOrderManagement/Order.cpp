@@ -100,14 +100,15 @@ std::vector<OrderItem> Order::getOrderItems() const
 {
 	auto& db = Database::getDB();
 	std::vector<OrderItem> order_item_list;
-	auto qr = db.select("Select order_item_id,order_item_name, quantity, price from OrderItem where order_id =" + std::to_string(this->order_id));
+	auto qr = db.select("Select order_item_id, item_id, order_item_name, quantity, price from OrderItem where order_id =" + std::to_string(this->order_id));
 	while (qr.rs->next())
 	{
 		std::string id = qr.rs->getString("order_item_id");
+		std::string menu_id = qr.rs->getString("item_id");
 		std::string name = qr.rs->getString("order_item_name");
 		int quantity = qr.rs->getInt("quantity");
 		float price = qr.rs->getDouble("price");
-		OrderItem order_item(id,name, quantity, price);
+		OrderItem order_item(id,menu_id,name, quantity, price);
 		order_item_list.push_back(order_item);
 	}
 	return order_item_list;
@@ -187,30 +188,72 @@ void Order::sendToKitchen()
 	this->status = OrderStatus::PENDING;
 }
 
-void Order::markPreparing()
+
+//when kitchenstaff press prepaing, deduct automatically
+void Order::markPreparing() 
 {
 	auto& db = Database::getDB();
-	auto stmt = db.prepare(
-		"UPDATE OrderTable SET order_status = ? WHERE order_id = ?"
-	);
+	auto items = getOrderItems();
 
-	std::string mysql_status = enumToString(OrderStatus::PREPARING);
-	stmt->setString(1, mysql_status);
-	stmt->setInt(2, this->order_id);
+	try
+	{
+		db.execute("START TRANSACTION"); //in case if order a and b done in a time we use transaction
 
-	int affected = stmt->executeUpdate();
-	if (affected != 1) {
-		throw std::runtime_error("markPreparing failed: order not found");
+		// check all ingredient to see if they are enough
+		for (const auto& item : items)
+		{
+			InventoryItemMenu recipe(item.getMenuItemId());
+
+			if (!recipe.checkAvailability(item.getQuantity()))
+			{
+				throw std::runtime_error(
+					"Not enough ingredients for " + item.getOrderItemName()
+				);
+			}
+		}
+
+		// deduct all ingredient for each orderitem
+		for (const auto& item : items)
+		{
+			InventoryItemMenu recipe(item.getMenuItemId());
+			recipe.deduct(item.getQuantity());
+		}
+
+		// update order status
+		auto stmt = db.prepare("Update OrderTable set order_status = ? where order_id = ?");
+
+		stmt->setString(1, enumToString(OrderStatus::PREPARING));
+		stmt->setInt(2, this->order_id);
+
+		int affected = stmt->executeUpdate();
+		if (affected != 1)
+		{
+			throw std::runtime_error("Failed to update order status");
+		}
+
+		this->status = OrderStatus::PREPARING;
+
+		//send to database
+		db.execute("COMMIT");
 	}
-
-	this->status = OrderStatus::PREPARING;
+	catch (...) //catch any exception
+	{
+		//rollback
+		db.execute("ROLLBACK");
+		throw;
+	}
 }
+
+
+
+
+
 
 void Order::markReady()
 {
 	auto& db = Database::getDB();
 	auto stmt = db.prepare(
-		"UPDATE OrderTable SET order_status = ? WHERE order_id = ?"
+		"Update OrderTable set order_status = ? Where order_id = ?"
 	);
 
 	std::string mysql_status = enumToString(OrderStatus::READY);
@@ -229,7 +272,7 @@ void Order::markCompleted()
 {
 	auto& db = Database::getDB();
 	auto stmt = db.prepare(
-		"UPDATE OrderTable SET order_status = ? WHERE order_id = ?"
+		"Update OrderTable set order_status = ? Where order_id = ?"
 	);
 
 	std::string mysql_status = enumToString(OrderStatus::COMPLETED);
@@ -249,7 +292,7 @@ void Order::setStatus(OrderStatus status)
 {
 	auto& db = Database::getDB();
 	auto stmt = db.prepare(
-		"UPDATE OrderTable SET order_status = ? WHERE order_id = ?"
+		"Update OrderTable set order_status = ? where order_id = ?"
 	);
 
 	std::string mysql_status = enumToString(status);
@@ -318,7 +361,7 @@ void Order::removeOrderItem(std::string order_item_id)
 {
 	auto& db = Database::getDB();
 	auto stmt = db.prepare(
-		"DELETE FROM OrderItem WHERE order_item_id = ? AND order_id = ?"
+		"Delete from OrderItem where order_item_id = ? and order_id = ?"
 	);
 
 	stmt->setString(1, order_item_id);
@@ -339,9 +382,9 @@ void Order::addOrderItem(const MenuItem& menu_item, int quantity)
 
     auto& db = Database::getDB();
     auto stmt = db.prepare(
-        "INSERT INTO OrderItem "
+        "Insert into OrderItem "
         "(order_item_id, order_item_name, quantity, price, order_id, item_id) "
-        "VALUES (?, ?, ?, ?, ?, ?)"
+        "values (?, ?, ?, ?, ?, ?)"
     );
     stmt->setString(1, order_item_id);
     stmt->setString(2, menu_item.getItemName());
@@ -362,7 +405,7 @@ void Order::updateOrderItemQuantity(std::string order_item_id, int quantity)
 {
 	auto& db = Database::getDB();
 	auto stmt = db.prepare(
-		"UPDATE OrderItem SET quantity = ? WHERE order_id = ? AND order_item_id = ?"
+		"update OrderItem set quantity = ? where order_id = ? and order_item_id = ?"
 	);
 
 	stmt->setInt(1, quantity);

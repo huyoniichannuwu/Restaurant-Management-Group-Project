@@ -1,4 +1,5 @@
 #pragma once
+#include "conio.h"
 #include "Cashier.h"
 #include "Waiter.h"
 #include "KitchenStaff.h"
@@ -6,6 +7,8 @@
 
 //hash password
 std::string hashPassword(const std::string& password);
+
+std::string inputPassword(std::string& password);
 
 //all print function
 void printLine(char c, const int width = 75);
@@ -15,8 +18,17 @@ void printOrderMenu(const std::vector<Order>& order_list);
 void printOrder(Order order, Staff staff, std::vector<OrderItem> order_item_list);
 void printOrderItemList(std::vector<OrderItem> order_item_list);
 void printStaffList(std::vector<Staff> staff_list);
-void orderModify(Order& order, Staff staff);
+
+
+
+//order modity function
+void orderModifyWaiter(Order& order, Staff staff); //called by showorderwaiter
+void orderModifyKitchenStaff(Order& order, Staff staff); //called by showOrderKitchenStaff
+
+
 
 //showScreen function
 void showMenuScreen();//this will call print menu function
 void showOrderWaiter(Staff staff,Waiter waiter);
+void showOrderKitchenStaff(Staff staff, KitchenStaff kitchen_staff);
+void showOrderCashier(Staff staff, Cashier cashier);

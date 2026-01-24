@@ -1,6 +1,11 @@
 #include "InventoryItemMenu.h"
 #include "Database.h"
 
+
+InventoryItemMenu::InventoryItemMenu(const std::string& menu_item_id) :
+    menu_item_id(menu_item_id){}
+
+
 void InventoryItemMenu::createRequirement(std::string item_id, std::string inventory_id, float quantity, std::string unit, int serving_size)
 {
 	auto& db = Database::getDB();
@@ -20,43 +25,42 @@ void InventoryItemMenu::createRequirement(std::string item_id, std::string inven
     }
 }
 
-std::string InventoryItemMenu::updateRequirement(float quantity)
+void InventoryItemMenu::updateRequirement(const std::string& menu_item_id, const std::string& inventory_item_id, float quantity_required)
 {
     auto& db = Database::getDB();
-    auto stmt = db.prepare("Update InventoryItemMenu set quantity = ? where item_id = ? and inventory_id = ?");
-    stmt->setDouble(1, quantity);
-    stmt->setString(2, this->menu_item_id);
-    stmt->setString(3, this->inventory_item_id);
+    auto stmt = db.prepare("Update InventoryItemMenu set quantity_required = ? where item_id = ? and inventory_id = ?");
+    stmt->setDouble(1, quantity_required);
+    stmt->setString(2, menu_item_id);
+    stmt->setString(3, inventory_item_id);
     int affected = stmt->executeUpdate();
     if (affected != 1) {
         throw std::runtime_error("Update requirement failed");
     }
 }
 
-bool InventoryItemMenu::checkAvailability(int order_quantity)
+bool InventoryItemMenu::checkAvailability(int quantity)
 {
     auto& db = Database::getDB();
 
     auto stmt = db.prepare(
-        "SELECT iim.quantity_required, iim.serving_size, inv.quantity "
+        "SELECT quantity_required, serving_size, inv.quantity "
         "FROM InventoryItemMenu iim "
         "JOIN InventoryItem inv ON iim.inventory_id = inv.inventory_id "
         "WHERE iim.item_id = ?"
     );
 
-    stmt->setString(1, this->menu_item_id);
+    stmt->setString(1, menu_item_id);
     auto rs = stmt->executeQuery();
 
-    while (rs->next()) {
-        float required = rs->getDouble("quantity_required");
-        int serving = rs->getInt("serving_size");
-        float stock = rs->getDouble("quantity");
+    //check if the ingredient is enough for the customer
+    while (rs->next())
+    {
+        float need =
+            (rs->getDouble("quantity_required") / rs->getInt("serving_size"))
+            * quantity;
 
-        float need = (required / serving) * order_quantity;
-
-        if (stock < need) {
+        if (rs->getDouble("quantity") < need)
             return false;
-        }
     }
     return true;
 }
@@ -68,7 +72,7 @@ std::string InventoryItemMenu::getIngredientDetail()
         "SELECT inv.item_name, iim.quantity_required, iim.unit, iim.serving_size "
         "FROM InventoryItemMenu iim "
         "JOIN InventoryItem inv ON iim.inventory_id = inv.inventory_id "
-        "WHERE iim.menu_item_id = ?"
+        "WHERE iim.item_id = ?"
     );
 
     stmt->setString(1, this->menu_item_id);
@@ -88,3 +92,22 @@ std::string InventoryItemMenu::getIngredientDetail()
     return oss.str();
 }
 
+void InventoryItemMenu::deduct(int order_quantity)
+{
+    auto& db = Database::getDB();
+    auto stmt = db.prepare(
+        "SELECT inventory_id, quantity_required, serving_size "
+        "FROM InventoryItemMenu WHERE item_id = ?"
+    );
+
+    stmt->setString(1, menu_item_id);
+    auto rs = stmt->executeQuery();
+
+    while (rs->next())
+    {
+        float need = (rs->getDouble("quantity_required") / rs->getInt("serving_size")) * order_quantity;
+
+        InventoryItem inv(rs->getString("inventory_id"));
+        inv.deductQuantity(need);
+    }
+}
