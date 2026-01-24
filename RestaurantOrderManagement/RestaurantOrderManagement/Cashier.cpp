@@ -12,7 +12,9 @@ std::vector<Order> Cashier::viewCompletedOrders()
 		auto& db = Database::getDB();
 		std::vector <Order> order_list;
 		//return result, then convert set to vector
-		auto qr = db.select("Select * from OrderTable where order_status = 'COMPLETED' ");
+		auto qr = db.select("SELECT o.* FROM OrderTable o LEFT JOIN Invoice i ON o.order_id = i.order_id "
+			"WHERE o.order_status = 'COMPLETED' "
+			"AND(i.invoice_status IS NULL OR i.invoice_status != 'PAID');");
 		while (qr.rs->next())
 		{
 			int order_id = qr.rs->getInt("order_id");
