@@ -194,7 +194,7 @@ void Order::sendToKitchen()
 
 
 //when kitchenstaff press prepaing, deduct automatically
-void Order::markPreparing(const std::string staff_id)
+void Order::markPreparing(const std::string& staff_id)
 {
 	auto& db = Database::getDB();
 	auto items = getOrderItems();
