@@ -18,6 +18,7 @@ int main()
 			std::string username; std::string password;
 			std::cout << "Staff ID:"; std::cin >> username;
 			std::cout << "password:"; password = inputPassword(password);
+			std::cout << std::endl;
 			auto staffOpt = Staff::login(username, hashPassword(password));
 
 			if (staffOpt)

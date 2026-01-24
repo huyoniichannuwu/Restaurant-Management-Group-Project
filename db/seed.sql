@@ -1,5 +1,5 @@
 SET FOREIGN_KEY_CHECKS = 1;
-
+use restaurantordermanagement;
 INSERT INTO Staff (staff_id, staff_name, password, phone, role) VALUES
 ('S0001', 'Nguyen Van A', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', '0901111111', 'Manager'),
 ('S0002', 'Tran Thi B',   '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', '0902222222', 'Waiter'),
@@ -74,3 +74,5 @@ VALUES
 INSERT INTO StaffOrder VALUES
 ('S0004',NOW(),'PREPARING',3),
 ('S0004',NOW(),'READY',4);
+
+select * from inventoryitem;
