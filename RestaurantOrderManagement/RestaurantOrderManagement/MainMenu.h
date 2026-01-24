@@ -9,7 +9,7 @@
 //hash password
 std::string hashPassword(const std::string& password);
 
-std::string inputPassword(std::string& password);
+std::string inputPassword();
 
 //all print function
 void printLine(char c, const int width = 75);
