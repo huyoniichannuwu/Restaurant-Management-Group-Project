@@ -194,16 +194,17 @@ void Order::sendToKitchen()
 
 
 //when kitchenstaff press prepaing, deduct automatically
-void Order::markPreparing() 
+void Order::markPreparing(const Staff& staff)
 {
 	auto& db = Database::getDB();
 	auto items = getOrderItems();
 
 	try
 	{
-		db.execute("START TRANSACTION"); //in case if order a and b done in a time we use transaction
+		//Start transaction
+		db.execute("START TRANSACTION");
 
-		// check all ingredient to see if they are enough
+		//Check ingredient availability
 		for (const auto& item : items)
 		{
 			InventoryItemMenu recipe(item.getMenuItemId());
@@ -216,37 +217,52 @@ void Order::markPreparing()
 			}
 		}
 
-		// deduct all ingredient for each orderitem
+		//Deduct ingredients
 		for (const auto& item : items)
 		{
 			InventoryItemMenu recipe(item.getMenuItemId());
 			recipe.deduct(item.getQuantity());
 		}
 
-		// update order status
-		auto stmt = db.prepare("Update OrderTable set order_status = ? where order_id = ?");
-
-		stmt->setString(1, enumToString(OrderStatus::PREPARING));
-		stmt->setInt(2, this->order_id);
-
-		int affected = stmt->executeUpdate();
-		if (affected != 1)
+		// Update OrderTable (global status)
 		{
-			throw std::runtime_error("Failed to update order status");
+			auto stmt = db.prepare(
+				"UPDATE OrderTable SET order_status = ? WHERE order_id = ?"
+			);
+			stmt->setString(1, enumToString(OrderStatus::PREPARING));
+			stmt->setInt(2, this->order_id);
+
+			if (stmt->executeUpdate() != 1)
+				throw std::runtime_error("Failed to update OrderTable");
 		}
 
-		this->status = OrderStatus::PREPARING;
+		// Update StaffOrder (staff responsibility)
+		{
+			auto stmt = db.prepare(
+				"UPDATE StaffOrder SET order_status = ? "
+				"WHERE order_id = ? AND staff_id = ?"
+			);
+			stmt->setString(1, enumToString(OrderStatus::PREPARING));
+			stmt->setInt(2, this->order_id);
+			stmt->setString(3, staff.getId());
 
-		//send to database
+			if (stmt->executeUpdate() != 1)
+				throw std::runtime_error("Failed to update StaffOrder");
+		}
+
+		// Commit
 		db.execute("COMMIT");
+
+		this->status = OrderStatus::PREPARING;
 	}
-	catch (...) //catch any exception
+	catch (...)
 	{
-		//rollback
+		// Rollback if ANYTHING fails
 		db.execute("ROLLBACK");
 		throw;
 	}
 }
+
 
 
 
