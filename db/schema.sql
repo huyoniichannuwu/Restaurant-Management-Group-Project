@@ -93,8 +93,9 @@ create table StaffOrder
     order_time datetime default current_timestamp,
     order_status ENUM('CREATED','PENDING','PREPARING','READY','COMPLETED','CANCELLED'),
     order_id int not null,
-    PRIMARY KEY(order_id, staff_id),
+    PRIMARY KEY(order_id, staff_id, order_time),
     FOREIGN KEY(order_id) REFERENCES OrderTable(order_id),
     FOREIGN KEY(staff_id) REFERENCES Staff(staff_id)
 );
 
+select*from staffOrder;
