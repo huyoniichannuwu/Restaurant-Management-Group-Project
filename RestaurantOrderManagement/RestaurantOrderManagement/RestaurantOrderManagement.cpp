@@ -42,6 +42,11 @@ int main()
 					Cashier cashier(staff.getId(), staff.getName(), staff.getPassword(), staff.getPhone());
 					showOrderCashier(staff, cashier);
 				}
+				else if (staff.getRole() == "Manager")
+				{
+					Manager manager(staff.getId(), staff.getName(), staff.getPassword(), staff.getPhone());
+					showMenuMangement(staff,manager);
+				}
 
 			}
 			else

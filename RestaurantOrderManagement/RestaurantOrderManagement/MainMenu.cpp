@@ -1209,7 +1209,7 @@ void showMenuMangement(Staff staff, Manager manager)
 		else if (choice == 'V' || choice == 'v')
 		{
 			//call sale report modify
-
+			saleModify(manager);
 		}
 
 

@@ -3,6 +3,10 @@
 #include "Invoice.h"
 #include "datetime.h"
 
+Manager::Manager(const std::string& id, const std::string& name,
+	const std::string& password, const std::string& phone) :
+	Staff(id, name, password, phone, "Manager"){}
+
 
 void Manager::viewSalesReport(std::chrono::system_clock::time_point start_date,std::chrono::system_clock::time_point end_date)
 {
