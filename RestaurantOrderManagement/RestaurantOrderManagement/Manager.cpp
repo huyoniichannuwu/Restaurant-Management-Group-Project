@@ -47,7 +47,6 @@ void Manager::viewSalesReport(std::chrono::system_clock::time_point start_date,s
 		<< std::fixed << std::setprecision(0)
 		<< revenue << " VND\n";
 	std::cout << "-----------------------------------\n";
-	std::cout << "[0] Back to Menu\n";
 }
 
 void Manager::addMenuItem(MenuItem item) {
