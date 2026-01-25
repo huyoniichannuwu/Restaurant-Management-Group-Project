@@ -13,14 +13,15 @@ Order Waiter::createOrder(int table_number, std::string customer_name, std::stri
 	Order order = Order::create(table_number, note, customer_name);
 	auto& db = Database::getDB();
 	auto stmt = db.prepare(
-		"Insert into OrderTable (table_number,customer_name,note,order_status,total_amount,order_time) "
-		"values (?,?,?,?,?,now())"
+		"Insert into OrderTable (table_number,customer_name,note,order_status,total_amount,staff_id, order_time) "
+		"values (?,?,?,?,?,?,now())"
 	);
 	stmt->setInt(1, table_number);
 	stmt->setString(2, customer_name);
 	stmt->setString(3, note);
 	stmt->setString(4, enumToString(order.getStatus()));
 	stmt->setDouble(5, 0.0);
+	stmt->setString(6, getId());
 
 	int affected = stmt->executeUpdate();
 	if (affected != 1) {

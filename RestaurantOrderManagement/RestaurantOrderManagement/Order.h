@@ -47,7 +47,7 @@ public:
 	void markPreparing(const std::string& staff_id);
 	void markReady(const std::string& staff_id);
 	void markCompleted(const std::string& staff_id);
-	static Order create(int table_number, std::string note, std::string customer_name, const Staff& staff);
+	static Order create(int table_number, std::string note, std::string customer_name);
 	void setStatus(OrderStatus status);
 	void setOrderId(int id);
 	void setNote(const std::string& _note);

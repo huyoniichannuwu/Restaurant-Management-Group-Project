@@ -504,38 +504,10 @@ void Order::setNote(const std::string& note)
 
 ////////////////////////////////////////
 //order management
-Order Order::create(int table_number, std::string note, std::string customer_name, const Staff& staff)
+Order Order::create(int table_number, std::string note, std::string customer_name)
 {
-	try
-	{
-		auto& db = Database::getDB();
-		Order order(table_number, note, customer_name);
-
-		auto pstmt = db.prepare(
-			"INSERT INTO OrderTable (table_number, note, customer_name, order_status,total_amount,staff_id order_time) "
-			"VALUES (?, ?, ?, ?, NOW())"
-		);
-
-		pstmt->setInt(1, table_number);
-		pstmt->setString(2, note);
-		pstmt->setString(3, customer_name);
-		pstmt->setString(4, "CREATED");
-		pstmt->setDouble(5, order.getTotalAmount());
-		pstmt->setString(6, staff.getId());
-
-		pstmt->executeUpdate();
-		int order_id = db.getLastInsertOrderId();
-		order.order_id = order_id;
-		order.status = OrderStatus::CREATED;
-
-		return order;
-	}
-
-	catch (std::runtime_error& e)
-	{
-		std::cout << e.what() << std::endl;
-	}
-
+	Order order(table_number, customer_name, note);
+	return order;
 }
 
 void Order::removeOrderItem(std::string order_item_id)
