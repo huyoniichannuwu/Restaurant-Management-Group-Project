@@ -509,9 +509,10 @@ Order Order::create(int table_number, std::string note, std::string customer_nam
 	try
 	{
 		auto& db = Database::getDB();
+		Order order(table_number, note, customer_name);
 
 		auto pstmt = db.prepare(
-			"INSERT INTO OrderTable (table_number, note, customer_name, order_status, order_time) "
+			"INSERT INTO OrderTable (table_number, note, customer_name, order_status,total_amount, order_time) "
 			"VALUES (?, ?, ?, ?, NOW())"
 		);
 
@@ -519,10 +520,10 @@ Order Order::create(int table_number, std::string note, std::string customer_nam
 		pstmt->setString(2, note);
 		pstmt->setString(3, customer_name);
 		pstmt->setString(4, "CREATED");
+		pstmt->setDouble(5, order.getTotalAmount());
 
 		pstmt->executeUpdate();
 		int order_id = db.getLastInsertOrderId();
-		Order order(table_number, note, customer_name);
 		order.order_id = order_id;
 		order.status = OrderStatus::CREATED;
 
