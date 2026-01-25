@@ -684,7 +684,7 @@ void staffModify(std::vector<Staff>& staff_list, Manager manager)
 				std::string id;
 				std::cout << "Enter staff id: "; std::cin >> id;
 				char confirm;
-				std::cout << "Are you sure you want to delete this staff ? y/n" << std::endl;
+				std::cout << "Are you sure you want to delete this staff ? y/n"; std::cin >> confirm;
 				if (confirm == 'y')
 				{
 					manager.removeStaff(id);
@@ -711,6 +711,55 @@ void staffModify(std::vector<Staff>& staff_list, Manager manager)
 
 
 	} while (modify_staff == true);
+}
+
+
+
+void saleModify(Manager manager)
+{
+	bool modify_sale;
+	do
+	{
+		printLine('=');
+		std::cout << std::setw(50) << "SALES REPORT SETUP" << std::endl;
+		printLine('=');
+		std::cout << "[1] Date Range\n"
+			<< "[0] Back\n";
+		printLine('-');
+		char choice;
+		std::cout << "choice: "; std::cin >> choice;
+
+		if (choice == '1')
+		{
+			try
+			{
+				std::string start_date; std::string end_date;
+				std::cout << "Date start (YYYY-MM-DD): "; std::cin >> start_date;
+				std::cout << "Date end(YYYY-MM-DD): "; std::cin >> end_date;
+				manager.viewSalesReport(DateTimeUtils::stringToTimePoint(start_date), DateTimeUtils::stringToTimePoint(end_date));
+			}
+			catch (std::runtime_error& e)
+			{
+				std::cout << e.what() << std::endl;
+			}
+
+		}
+		
+		else if (choice == '0')
+		{
+			modify_sale = false;
+		}
+
+		else
+		{
+			std::cout << "Wrong input, please input as what is showing on the screen" << std::endl;
+			continue;
+		}
+
+
+	} while (modify_sale == true);
+
+
 }
 
 
@@ -1152,6 +1201,8 @@ void showMenuMangement(Staff staff, Manager manager)
 		else if (choice == 'S' || choice == 's')
 		{
 			//call staff modify
+			std::vector<Staff> staff_list = Staff::getAllStaff();
+			staffModify(staff_list,manager);
 
 		}
 

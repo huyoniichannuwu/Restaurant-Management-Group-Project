@@ -5,7 +5,7 @@
 class Manager :public Staff
 {
 public:
-	float viewSalesReport(std::chrono::system_clock::time_point start_date, std::chrono::system_clock::time_point end_date);
+	void viewSalesReport(std::chrono::system_clock::time_point start_date, std::chrono::system_clock::time_point end_date);
 	void addMenuItem(MenuItem item);
 	void updateMenuItem(std::string item_id, std::string name, float price);
 	void removeMenuItem(std::string item_id);

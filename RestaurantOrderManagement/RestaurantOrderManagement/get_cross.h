@@ -2,6 +2,7 @@
 #define NOMINMAX
 #include "Windows.h"
 
+#include<chrono>
 #ifdef _WIN32
 #include <conio.h>
 inline char readChar()
@@ -50,3 +51,25 @@ inline void clearScreen()
 #endif
 }
 
+namespace DateTimeUtils {
+
+    inline std::chrono::system_clock::time_point
+        stringToTimePoint(const std::string& date)
+    {
+        std::tm tm{};
+        std::istringstream ss(date);
+
+        ss >> std::get_time(&tm, "%Y-%m-%d");
+
+        if (ss.fail()) {
+            throw std::runtime_error("Invalid date format. Use YYYY-MM-DD");
+        }
+
+        tm.tm_hour = 0;
+        tm.tm_min = 0;
+        tm.tm_sec = 0;
+
+        std::time_t tt = std::mktime(&tm);
+        return std::chrono::system_clock::from_time_t(tt);
+    }
+}

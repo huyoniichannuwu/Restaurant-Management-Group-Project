@@ -4,25 +4,48 @@
 #include "datetime.h"
 
 
-float Manager::viewSalesReport(std::chrono::system_clock::time_point start_date, std::chrono::system_clock::time_point end_date) {
-	//chuyen timepoint
+void Manager::viewSalesReport(std::chrono::system_clock::time_point start_date,std::chrono::system_clock::time_point end_date)
+{
 	std::string str_start = DateTimeUtils::timePointToString(start_date);
 	std::string str_end = DateTimeUtils::timePointToString(end_date);
 
 	auto& db = Database::getDB();
-	std::string sql = ("SELECT SUM(total_amount) AS revenue FROM OrderTable "
-		"WHERE order_time >= ? AND order_time <= ? AND order_status = 'COMPLETED'");
-	auto statement = db.prepare(sql);
 
+	std::string sql =
+		"SELECT COUNT(*) AS total_orders, "
+		"COALESCE(SUM(total_amount), 0) AS revenue "
+		"FROM OrderTable "
+		"WHERE order_time >= ? AND order_time <= ? "
+		"AND order_status = 'COMPLETED'";
+
+	auto statement = db.prepare(sql);
 	statement->setString(1, str_start);
 	statement->setString(2, str_end);
-	//thuc thi
+
 	auto rs = statement->executeQuery();
+
+	int totalOrders = 0;
+	double revenue = 0;
+
 	if (rs->next()) {
-		return rs->getDouble("revenue");
+		totalOrders = rs->getInt("total_orders");
+		revenue = rs->getDouble("revenue");
 	}
-	return 0;
+
+	// ===== IN REPORT =====
+	std::cout << "\n--- SALES REPORT ---\n";
+	std::cout << "-----------------------------------\n";
+	std::cout << "REPORT FROM " << str_start
+		<< " TO " << str_end << "\n";
+	std::cout << "-----------------------------------\n";
+	std::cout << "Total Orders:   " << totalOrders << "\n";
+	std::cout << "Total Revenue:  "
+		<< std::fixed << std::setprecision(0)
+		<< revenue << " VND\n";
+	std::cout << "-----------------------------------\n";
+	std::cout << "[0] Back to Menu\n";
 }
+
 void Manager::addMenuItem(MenuItem item) {
 	//lay DB
 	auto& db = Database::getDB();		
