@@ -35,7 +35,7 @@ Order Waiter::createOrder(int table_number, std::string customer_name, std::stri
 
 	//insert into staff order
 	auto staff_stmt = db.prepare(
-		"Insert into StaffOrder (staff_id,order_id,order_status,order_time) "
+		"Inser into StaffOrder (staff_id,order_id,order_status,order_time) "
 		"values (?,?,?,now())"
 	);
 	staff_stmt->setString(1, getId());
