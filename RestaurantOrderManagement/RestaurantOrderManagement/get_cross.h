@@ -38,3 +38,13 @@ inline bool safe_localtime(const std::time_t* tt, std::tm* out)
 #endif
 }
 
+
+void clearScreen()
+{
+#ifdef _WIN32
+    system("cls");
+#else
+    system("clear");
+#endif
+}
+

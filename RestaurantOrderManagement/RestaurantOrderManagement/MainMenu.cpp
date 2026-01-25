@@ -508,7 +508,7 @@ void showMenuScreen()
 		int choice;
 		std::cout << "Your choice: ";
 		std::cin >> choice;
-		system("cls");
+		clearScreen();
 		switch (choice)
 		{
 		case 0:
@@ -547,6 +547,7 @@ void showOrderWaiter(Staff staff,Waiter waiter)
 	bool waiter_screen = true; char waiter_choice;
 	do
 	{
+		clearScreen();
 		printOrderMenu(order_list);
 		std::cout << "[N] New Order\t"
 			<< "[V] View Detail(Input ID)\t"
@@ -555,6 +556,7 @@ void showOrderWaiter(Staff staff,Waiter waiter)
 
 		if (waiter_choice == 'N') //waiter input order detail
 		{
+			clearScreen();
 			int table_number; std::string customer_name; std::string note;
 			std::cout << "--CREATE NEW ORDER--" << std::endl;
 			do
@@ -578,6 +580,7 @@ void showOrderWaiter(Staff staff,Waiter waiter)
 
 		else if (waiter_choice == 'V')
 		{
+			clearScreen();
 			int id;
 			std::cout << "Enter order_id: "; std::cin >> id;
 			try
@@ -613,6 +616,7 @@ void showOrderKitchenStaff(Staff staff, KitchenStaff kitchen_staff)
 	bool kitchen_screen = true;
 	do
 	{
+		clearScreen();
 		printOrderMenu(order_list);
 		std::cout << "[V] View Detail(Input ID)\t" << "[0] logout\n";
 		char choice;
@@ -654,6 +658,7 @@ void showOrderCashier(Staff staff, Cashier cashier)
 	std::vector<Order> order_list = cashier.viewCompletedOrders();
 	do
 	{
+		clearScreen();
 		printOrderMenu(order_list);
 		std::cout << "[V] View Detail(Input ID)\t" << "[0] logout\n";
 		char choice;
