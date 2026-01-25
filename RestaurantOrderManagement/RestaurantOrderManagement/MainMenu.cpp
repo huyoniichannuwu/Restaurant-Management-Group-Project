@@ -573,7 +573,7 @@ void showOrderWaiter(Staff staff,Waiter waiter)
 			std::cout << "note(optional) "; std::getline(std::cin, note);
 
 			//when create order, waiter will view that order to modify
-			Order order = Order::create(table_number, note, customer_name);
+			Order order = Order::create(table_number, note, customer_name,staff);
 			orderModifyWaiter(order, staff);
 			
 		}
