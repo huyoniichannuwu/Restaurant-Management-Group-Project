@@ -1,8 +1,9 @@
-#include "Order.h"
-#include "Cashier.h"
-#include "PaymentStatus.h"
 #pragma once
+#include "Order.h"
+#include "PaymentStatus.h"
 
+
+class Cashier;
 
 class Invoice
 {
@@ -19,8 +20,9 @@ public:
 	int getOrderId();
 	void setOrderId(const int _order_id);
 
-	static Invoice generate(const Order& order, Cashier cashier);
-	float calculateTotal(Order order);
+	static Invoice generate(const Order& order,const Cashier& cashier);
+
+	float calculateTotal(const Order& order) const;
 	float calculateTotalSales();
 	void markPaid();
 	void markRefunded();

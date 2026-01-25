@@ -1,3 +1,4 @@
+#pragma once
 #include "MainMenu.h"
 
 //title setw(50)

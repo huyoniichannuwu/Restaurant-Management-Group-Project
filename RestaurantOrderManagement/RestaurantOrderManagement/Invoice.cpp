@@ -1,6 +1,7 @@
 #include "Invoice.h"
 #include "Database.h"
 #include "get_cross.h"
+#include "Cashier.h"
 
 // convert time to string DateTime MySQL (YYYY-MM-DD HH:MM:SS)
 std::string timePointToString(std::chrono::system_clock::time_point time) {
@@ -16,33 +17,33 @@ std::string timePointToString(std::chrono::system_clock::time_point time) {
 }
 
 
-Invoice Invoice::generate(const Order& order, Cashier cashier) {
+Invoice Invoice::generate(const Order& order, const Cashier& cashier)
+{
     Invoice inv;
-    inv.order_id = order.getOrderId();       
+    inv.order_id = order.getOrderId();
     inv.total_price = order.getTotalAmount();
     inv.issue_date = std::chrono::system_clock::now();
     inv.payment_status = PaymentStatus::PENDING;
 
-    try {
-        auto& db = Database::getDB();
-        std::unique_ptr<sql::PreparedStatement> pstmt = db.prepare(
-            "INSERT INTO Invoice (order_id, issue_date, invoice_status, total_price, staff_id) VALUES (?, ?, ?, ?, ?)"
-        );
+    auto& db = Database::getDB();
+    auto pstmt = db.prepare(
+        "INSERT INTO Invoice (order_id, issue_date, invoice_status, total_price, staff_id) "
+        "VALUES (?, ?, ?, ?, ?)"
+    );
 
-        pstmt->setInt(1, inv.order_id);
-        pstmt->setString(2, timePointToString(inv.issue_date));
-        pstmt->setString(3, paymentStatusToString(inv.payment_status));
-        pstmt->setDouble(4, inv.total_price);
-        pstmt->setString(5, cashier.getId());
+    pstmt->setInt(1, inv.order_id);
+    pstmt->setString(2, timePointToString(inv.issue_date));
+    pstmt->setString(3, "PENDING");
+    pstmt->setDouble(4, inv.total_price);
+    pstmt->setString(5, cashier.getId());
+    pstmt->executeUpdate();
 
-        pstmt->executeUpdate();
-    }
-    catch (sql::SQLException& e) {
-        std::cout << "SQL Error in Invoice::generate: " << e.what() << std::endl;
-    }
+    //get last id
+    inv.invoice_id = db.getLastInsertOrderId();
 
     return inv;
 }
+
 
 int Invoice::getInvoiceId() {
     return this->invoice_id;
@@ -58,9 +59,8 @@ void Invoice::setOrderId(int _order_id) {
 }
 
 
-float Invoice::calculateTotal(Order order) {
-    this->total_price = order.getTotalAmount();
-    return this->total_price;
+float Invoice::calculateTotal(const Order& order) const {
+    return order.getTotalAmount();
 }
 
 float Invoice::calculateTotalSales() {

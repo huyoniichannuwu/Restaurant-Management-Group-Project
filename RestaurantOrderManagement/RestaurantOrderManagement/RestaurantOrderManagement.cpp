@@ -1,5 +1,5 @@
 #include "MainMenu.h"
-#pragma once
+
 int main()
 {
     bool logging_screen = true;

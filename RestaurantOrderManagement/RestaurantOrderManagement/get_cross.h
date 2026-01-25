@@ -1,4 +1,6 @@
 #pragma once
+#define NOMINMAX
+#include "Windows.h"
 
 #ifdef _WIN32
 #include <conio.h>
@@ -39,7 +41,7 @@ inline bool safe_localtime(const std::time_t* tt, std::tm* out)
 }
 
 
-void clearScreen()
+inline void clearScreen()
 {
 #ifdef _WIN32
     system("cls");
