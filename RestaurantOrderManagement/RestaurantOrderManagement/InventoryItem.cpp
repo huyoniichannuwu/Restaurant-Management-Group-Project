@@ -27,3 +27,16 @@ void InventoryItem::deductQuantity(float amount)
         throw std::runtime_error("Not enough inventory or inventory not found");
     }
 }
+
+bool InventoryItem::exists(const std::string& inventory_id)
+{
+    auto& db = Database::getDB();
+    auto stmt = db.prepare(
+        "SELECT 1 FROM InventoryItem WHERE inventory_id = ? LIMIT 1"
+    );
+    stmt->setString(1, inventory_id);
+
+    auto rs = stmt->executeQuery();
+    return rs->next();
+}
+

@@ -130,6 +130,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Manager.cpp" />
     <ClCompile Include="RestaurantOrderManagement.cpp" />
     <ClCompile Include="Database.cpp" />
     <ClCompile Include="Order.cpp" />

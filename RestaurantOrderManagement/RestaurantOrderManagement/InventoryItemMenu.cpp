@@ -38,6 +38,24 @@ void InventoryItemMenu::updateRequirement(const std::string& menu_item_id, const
     }
 }
 
+
+bool InventoryItemMenu::hasRequirement(const std::string& item_id)
+{
+    auto& db = Database::getDB();
+    auto stmt = db.prepare(
+        "SELECT 1 FROM InventoryItemMenu WHERE item_id = ? LIMIT 1"
+    );
+    stmt->setString(1, item_id);
+
+    auto rs = stmt->executeQuery();
+    return rs->next();
+}
+
+
+
+
+
+
 bool InventoryItemMenu::checkAvailability(int quantity)
 {
     auto& db = Database::getDB();

@@ -8,4 +8,5 @@ private:
 public:
 	InventoryItem(const std::string& inventory_id);
 	void deductQuantity(float amount);
+	static bool exists(const std::string& inventory_id);
 };

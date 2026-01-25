@@ -54,6 +54,41 @@ std::string inputPassword()
 	return password;
 }
 
+
+//all checking function
+bool hasDigit(const std::string& s)
+{
+	for (unsigned char c : s)
+	{
+		if (std::isdigit(c))
+			return true;
+	}
+	return false;
+}
+
+bool hasLetter(const std::string& s)
+{
+	for (unsigned char c : s)
+	{
+		if (std::isalpha(c))
+			return true;
+	}
+	return false;
+}
+
+bool hasSpecialChar(const std::string& s)
+{
+	for (unsigned char c : s)
+	{
+		if (!std::isalnum(c))
+			return true;
+	}
+	return false;
+}
+
+
+
+
 //all print function
 void printLine(char c, const int width)
 {
@@ -193,6 +228,34 @@ void printStaffList(std::vector<Staff> staff_list)
 	}
 	printLine('-');
 }
+
+void printMenuManagement(std::vector<MenuItem> menu_list)
+{
+	printLine('-');
+	std::cout << std::setw(50) << "MENU" << std::endl;
+	printLine('-');
+	std::cout << std::left
+		<< std::setw(6) << "ID"
+		<< std::setw(35) << "Item Name"
+		<< std::setw(15) << "Price(VND)"
+		<< std::setw(15) << "Category"
+		<< std::setw(10) << "Available"
+		<< std::endl;
+	printLine('-');
+	for (int i = 0; i < menu_list.size(); i++)
+	{
+		std::cout << std::left
+			<< std::setw(6) << menu_list[i].getItemId()
+			<< std::setw(35) << menu_list[i].getItemName()
+			<< std::setw(15) << menu_list[i].getPrice()
+			<< std::setw(15) << menu_list[i].getCategory()
+			<< std::setw(10) << (menu_list[i].isAvailable() ? "Yes" : "No")
+			<< std::endl;
+	}
+}
+
+
+
 
 //all modify method
 
@@ -503,6 +566,152 @@ void orderModifyCashier(Order& order, Staff staff, Cashier cashier)
 }
 
 
+void staffModify(std::vector<Staff>& staff_list, Manager manager)
+{
+	bool modify_staff = true;
+	do
+	{
+		clearScreen();
+		printStaffList(staff_list);
+		std::cout << "[A] Add Staff\t"
+			<< "[U] Update Staff\t"
+			<< "[R] Remove Staff\n"
+			<< "[B] Back to Menu Management\n";
+		char choice;
+		std::cout << "Choice: "; std::cin >> choice;
+
+
+		if (choice == 'A' || choice == 'a')
+		{
+			try
+			{
+				std::string staff_id;
+				std::string staff_name;
+				std::string password; std::string hash_password;
+				std::string phone;
+				std::string role;
+
+				std::cout << "Enter staff id: "; std::cin >> staff_id;
+				std::cout << "Enter staff name: "; std::cin.ignore(); std::getline(std::cin, staff_name);
+				std::cout << "Enter staff password: "; std::cin >> password; hash_password = hashPassword(password);
+
+				bool retry;
+				do
+				{
+					retry = false;
+					std::cout << "Enter staff phone: "; std::cin >> phone;
+					if (phone.size() != 10 || hasSpecialChar(phone) == true || hasLetter(phone) == true)
+					{
+						std::cout << "Invalid phone number, phone length is 10 or contain special character\n";
+						retry = true;
+					}
+				} while (retry == true);
+
+				std::cout << "Enter staff role: "; std::cin >> role;
+				
+
+				Staff staff(staff_id, staff_name, hash_password, phone, role);
+				
+				char confirm;
+				std::cout << "Are you sure you want to add this staff ? y/n"; std::cin >> confirm;
+				if (confirm == 'y' || confirm == 'Y')
+				{
+					manager.addStaff(staff);
+
+					std::cout << "Staff has been added successfully";
+				}
+				else continue;
+
+			}
+			catch (std::runtime_error& e)
+			{
+				std::cout << e.what() << std::endl;
+			}
+
+		}
+
+		else if (choice == 'U' || choice == 'u')
+		{
+			try
+			{
+				std::string staff_id;
+				std::string staff_name;
+				std::string password; std::string hash_password;
+				std::string phone;
+				std::string role;
+
+				std::cout << "Enter staff id: "; std::cin >> staff_id;
+				std::cout << "Enter staff name: "; std::cin.ignore(); std::getline(std::cin, staff_name);
+				std::cout << "Enter staff password: "; std::cin >> password; hash_password = hashPassword(password);
+
+				bool retry;
+				do
+				{
+					retry = false;
+					std::cout << "Enter staff phone: "; std::cin >> phone;
+					if (phone.size() != 10 || hasSpecialChar(phone) == true || hasLetter(phone) == true)
+					{
+						std::cout << "Invalid phone number, phone length is 10 or contain special character\n";
+						retry = true;
+					}
+				} while (retry == true);
+
+				std::cout << "Enter staff role: "; std::cin >> role;
+
+
+				Staff staff(staff_id, staff_name, hash_password, phone, role);
+
+				char confirm;
+				std::cout << "Are you sure you want to update this staff ? y/n"; std::cin >> confirm;
+				if (confirm == 'y' || confirm == 'Y')
+				{
+					manager.updateStaff(staff_id,staff);
+					std::cout << "Staff has been updated successfully";
+				}
+				else continue;
+			}
+			catch (std::runtime_error& e)
+			{
+				std::cout << e.what() << std::endl;
+			}
+
+		}
+
+		else if (choice == 'R' || choice == 'r')
+		{
+			try
+			{
+				std::string id;
+				std::cout << "Enter staff id: "; std::cin >> id;
+				char confirm;
+				std::cout << "Are you sure you want to delete this staff ? y/n" << std::endl;
+				if (confirm == 'y')
+				{
+					manager.removeStaff(id);
+					std::cout << "Staff has been removed successfully" << std::endl;
+				}
+				else continue;
+			}
+			catch (std::runtime_error& e)
+			{
+				std::cout << e.what() << std::endl;
+			}
+
+		}
+
+		else if (choice == 'B' || choice == 'b')
+		{
+			modify_staff = false;
+		}
+		else
+		{
+			std::cout << "wrong input, please input exacly what is showed on the screen" << std::endl;
+			continue;
+		}
+
+
+	} while (modify_staff == true);
+}
 
 
 
@@ -609,6 +818,22 @@ void showOrderWaiter(Staff staff,Waiter waiter)
 			try
 			{
 				Order modify_order = Order::getOrderById(id);
+
+				bool found = false;
+				for (auto& o : order_list) //check if user input the right order id which is showed on the screen
+				{
+					if (o.getOrderId() == id)
+					{
+						found = true;
+						break;
+					}
+				}
+				if (!found)
+				{
+					std::cout << "You don't have permission to view this order\n";
+					continue;
+				}
+
 				orderModifyWaiter(modify_order, staff);
 			}
 			catch (const std::runtime_error& e)
@@ -651,6 +876,22 @@ void showOrderKitchenStaff(Staff staff, KitchenStaff kitchen_staff)
 				int id;
 				std::cout << "Enter order id: "; std::cin >> id;
 				Order order = Order::getOrderById(id);
+
+				bool found = false;
+				for (auto& o : order_list) //check if user input the right order id which is showed on the screen
+				{
+					if (o.getOrderId() == id)
+					{
+						found = true;
+						break;
+					}
+				}
+				if (!found)
+				{
+					std::cout << "You don't have permission to view this order\n";
+					continue;
+				}
+
 				orderModifyKitchenStaff(order, staff);
 			}
 			catch(std::runtime_error& e)
@@ -693,6 +934,22 @@ void showOrderCashier(Staff staff, Cashier cashier)
 				int id;
 				std::cout << "Enter Order ID: "; std::cin >> id;
 				Order order = Order::getOrderById(id);
+
+				bool found = false;
+				for (auto& o : order_list) //check if user input the right order id which is showed on the screen
+				{
+					if (o.getOrderId() == id)
+					{
+						found = true;
+						break;
+					}
+				}
+				if (!found)
+				{
+					std::cout << "You don't have permission to view this order\n";
+					continue;
+				}
+
 				orderModifyCashier(order, staff, cashier);
 
 			}
@@ -717,4 +974,203 @@ void showOrderCashier(Staff staff, Cashier cashier)
 
 
 	} while (cashier_screen == true);
+}
+
+
+
+
+//Menu mangement of Manager
+void showMenuMangement(Staff staff, Manager manager)
+{
+	bool manager_screen = true;
+	do
+	{
+		std::vector<MenuItem> menu_list = MenuItem::getAllMenuItems();
+		printMenu(menu_list);
+		std::cout << "[A] Add New Dish\t"
+			<< "[E] Edit dish\t"
+			<< "[R] Remove Dish\n"
+			<< "[S] Staff Management\t"
+			<< "[V] View Sale Report\t"
+			<< "[0] logout\n";
+		char choice;
+		std::cout << "Your choice:"; std::cin >> choice;
+
+
+		if (choice == 'A')
+		{
+			std::cout << "---ADD NEW DISH---"<<std::endl;
+			std::string menu_id, menu_name, menu_category;
+			float price; bool is_available;
+			std::cout << "Enter ID  (e,g M0001):"; std::cin >> menu_id;
+			std::cout << "Enter Name: "; std::cin >> menu_name;
+			std::cout << "Enter Category: "; std::cin >> menu_category;
+
+			//validate user input
+			bool retry = true;
+			do
+			{
+				retry = false;
+				std::cout << "Enter price: "; std::cin >> price;
+				if (price <= 0)
+				{
+					std::cout << "Invalid price, please enter again";
+					retry = true;
+				}
+			} while (retry == true);
+
+			//validate user input
+			int available;
+			while (true)
+			{
+				std::cout << "Is available ? (1:Yes, 0:No): ";
+				std::cin >> available;
+
+				// check input if user enter char
+				if (std::cin.fail())
+				{
+					std::cin.clear(); // clear error flag
+					std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+					std::cout << "Invalid input. Please enter 1 or 0.\n";
+					continue;
+				}
+
+				// check logical value
+				if (available == 0 || available == 1)
+					break;
+
+				std::cout << "Only 1 (Yes) or 0 (No) is allowed.\n";
+			}
+			is_available = (available == 1);
+
+
+			MenuItem item(menu_id, menu_name, price, menu_category, is_available);
+			manager.addMenuItem(item);
+
+			//called when a menuitem is added but there is no ingredient for it
+			if (!InventoryItemMenu::hasRequirement(item.getItemId()))
+			{
+				char choice;
+				std::cout << "[System]: WARNING: No inventory requirement found. Create now? (y/n): ";
+				std::cin >> choice;
+
+				if (choice == 'y' || choice == 'Y')
+				{
+					int serving;
+					std::cout << "Enter Serving Size: ";
+					std::cin >> serving;
+
+					while (true)
+					{
+						std::string inv_id;
+						float qty; std::string unit;
+
+						std::cout << "Ingredient ID & Amount (I01 0.2) or 0 to confirm: ";
+						std::cin >> inv_id;
+						
+						//check if ingredient exist
+						if (!InventoryItem::exists(inv_id))
+						{
+							std::cout << "This ingredient don't exist in inventory, please try again" << std::endl;
+							continue;
+						}
+
+						if (inv_id == "0") break;
+
+						std::cin >> qty;
+						std::cout << "unit: "; std::cin >> unit;
+						try
+						{
+							InventoryItemMenu::createRequirement(item.getItemId(), inv_id, qty, unit, serving);
+						}
+						catch (std::runtime_error& e)
+						{
+							std::cout << e.what() << std::endl;
+						}
+					}
+
+					std::cout << "[System]: Requirement created!\n";
+				}
+			}
+
+
+		}
+
+
+		else if (choice == 'E')
+		{
+			std::string id;
+			std::cout << "Enter Menu ID: "; std::cin >> id;
+			try
+			{
+				std::string id, new_name; float new_price;
+				std::cout << "Enter existed menu item id: "; std::cin >> id;
+				std::cout << "Enter new menu item name: "; std::cin >> new_name;
+				std::cout << "Enter new price: "; std::cin >> new_price;
+				
+				char confirm;
+				std::cout << "Are you sure you want to update ? y/n "; std::cin >> confirm;
+				if (confirm == 'y')
+				{
+					manager.updateMenuItem(id, new_name, new_price);
+					std::cout << "Menu item " + id + " has been updated successfuly" << std::endl;
+				}
+				else continue;
+
+			}
+			catch (std::runtime_error& e)
+			{
+				std::cout << e.what() << std::endl;
+			}
+
+		}
+
+
+		else if (choice == 'R')
+		{
+			std::string id;
+			std::cout << "Enter menu item ID: "; std::cin >> id;
+			char confirm;
+			std::cout << "Are you sure you want to delete this item ?";
+			std::cin >> confirm;
+
+			if (confirm == 'y')
+			{
+				try
+				{
+					manager.removeMenuItem(id);
+					std::cout << "Menu Item " + id + " has been removed successfully" << std::endl;
+				}
+				catch (std::runtime_error& e)
+				{
+					std::cout << e.what() << std::endl;
+				}
+			}
+			else continue;
+		}
+
+		else if (choice == 'S' || choice == 's')
+		{
+			//call staff modify
+
+		}
+
+		else if (choice == 'V' || choice == 'v')
+		{
+			//call sale report modify
+
+		}
+
+
+
+		else if (choice == '0')
+		{
+			manager_screen = false;
+		}
+
+		else
+		{
+			std::cout << "wrong input, please input what is showing on the screen" << std::endl;
+		}
+	} while (manager_screen == true);
 }

@@ -1,7 +1,9 @@
 #pragma once
 #include "get_cross.h"
 #include <limits>
+#include <cctype>
 
+#include "Manager.h"
 #include "Cashier.h"
 #include "Waiter.h"
 #include "KitchenStaff.h"
@@ -12,6 +14,11 @@ std::string hashPassword(const std::string& password);
 
 std::string inputPassword();
 
+//checking special word
+bool hasSpecialChar(const std::string& s);
+bool hasLetter(const std::string& s);
+bool hasDigit(const std::string& s);
+
 //all print function
 void printLine(char c, const int width = 75);
 void printMenu(const std::vector<MenuItem>& menu_list, bool filter = false, std::string category ="");
@@ -20,14 +27,14 @@ void printOrderMenu(const std::vector<Order>& order_list);
 void printOrder(Order order, Staff staff, std::vector<OrderItem> order_item_list);
 void printOrderItemList(std::vector<OrderItem> order_item_list);
 void printStaffList(std::vector<Staff> staff_list);
-
+void printMenuManagement(std::vector<MenuItem> menu_list);
 
 
 //order modity function
 void orderModifyWaiter(Order& order, Staff staff); //called by showorderwaiter
 void orderModifyKitchenStaff(Order& order, Staff staff); //called by showOrderKitchenStaff
 void orderModifyCashier(Order& order, Staff staff, Cashier cashier); //called by showOrderCashier
-
+void staffModify(std::vector<Staff>& staff_list, Manager manager); // called by showMenuManagement
 
 
 //showScreen function
@@ -35,3 +42,4 @@ void showMenuScreen();//this will call print menu function
 void showOrderWaiter(Staff staff,Waiter waiter);
 void showOrderKitchenStaff(Staff staff, KitchenStaff kitchen_staff);
 void showOrderCashier(Staff staff, Cashier cashier);
+void showMenuMangement(Staff staff, Manager manager);

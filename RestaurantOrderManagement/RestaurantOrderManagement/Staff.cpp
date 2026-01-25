@@ -54,3 +54,37 @@ std::string Staff::getPhone() const
 {
 	return this->phone;
 }
+
+std::vector<Staff> Staff::getAllStaff()
+{
+    std::vector<Staff> staff_list;
+    auto& db = Database::getDB();
+
+    try
+    {
+        auto qr = db.select(
+            "SELECT staff_id, staff_name, password, phone, role FROM Staff"
+        );
+
+        while (qr.rs->next())
+        {
+            Staff staff(
+                qr.rs->getString("staff_id"),
+                qr.rs->getString("staff_name"),
+                qr.rs->getString("password"),
+                qr.rs->getString("phone"),
+                qr.rs->getString("role")
+            );
+
+            staff_list.push_back(staff);
+        }
+    }
+    catch (sql::SQLException& e)
+    {
+        throw std::runtime_error(
+            std::string("getAllStaff failed: ") + e.what()
+        );
+    }
+
+    return staff_list;
+}

@@ -1,6 +1,4 @@
 #include "Manager.h"
-#include "Staff.h"
-#include "MenuItem.h"
 #include "Database.h"
 #include "Invoice.h"
 #include "datetime.h"
@@ -37,24 +35,36 @@ void Manager::addMenuItem(MenuItem item) {
 	statement->setString(4, item.getCategory());
 	statement->setBoolean(5, item.isAvailable());
 	//thuc thi
-	statement->executeUpdate();			
+	int affected = statement->executeUpdate();
+	if (affected != 1)
+	{
+		throw std::runtime_error("Failed to add menuitem");
+	}
 }
 void Manager::updateMenuItem(std::string item_id, std::string name, float price) {
 	auto& db = Database::getDB();
-	auto statement = db.prepare("UPDATE MenuItem SET item_name=?, price=?, WHERE item_id=?");
+	auto statement = db.prepare("UPDATE MenuItem SET item_name=?, price=? WHERE item_id=?");
 
 	statement->setString(1, name);
 	statement->setDouble(2, price);
 	statement->setString(3, item_id);
 
-	statement->executeUpdate();
+	int affected = statement->executeUpdate();
+	if (affected != 1)
+	{
+		throw std::runtime_error("Failed to update menuitem");
+	}
 }
 void Manager::removeMenuItem(std::string item_id) {
 	auto& db = Database::getDB();
 	auto statement = db.prepare("DELETE FROM MenuItem WHERE item_id=?");
 	
 	statement->setString(1, item_id);
-	statement->executeUpdate();
+	int affected = statement->executeUpdate();
+	if (affected != 1)
+	{
+		throw std::runtime_error("Failed to remove menuitem");
+	}
 }
 void Manager::addStaff(Staff staff) {
 	auto& db = Database::getDB();
@@ -62,9 +72,13 @@ void Manager::addStaff(Staff staff) {
 
 	statement->setString(1, staff.getId());
 	statement->setString(2, staff.getName());
-	statement->setString(5, staff.getRole());
+	statement->setString(3, staff.getRole());
 
-	statement->executeUpdate();
+	int affected = statement->executeUpdate();
+	if (affected != 1)
+	{
+		throw std::runtime_error("Failed to add staff");
+	}
 }
 void Manager::updateStaff(std::string staff_id, Staff staff) {
 	auto& db = Database::getDB();
@@ -74,7 +88,11 @@ void Manager::updateStaff(std::string staff_id, Staff staff) {
 	statement->setString(2, staff.getRole());
 	statement->setString(3, staff_id);
 
-	statement->executeUpdate();
+	int affected = statement->executeUpdate();
+	if (affected != 1)
+	{
+		throw std::runtime_error("Failed to update staff");
+	}
 }
 void Manager::removeStaff(std::string staff_id) {
 	auto& db = Database::getDB();
@@ -82,5 +100,9 @@ void Manager::removeStaff(std::string staff_id) {
 
 	statement->setString(1, staff_id);
 
-	statement->executeUpdate();
+	int affected = statement->executeUpdate();
+	if (affected != 1)
+	{
+		throw std::runtime_error("Failed to remove staff");
+	}
 }
