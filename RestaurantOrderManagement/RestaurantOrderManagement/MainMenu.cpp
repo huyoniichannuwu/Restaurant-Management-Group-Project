@@ -1195,7 +1195,7 @@ void showMenuMangement(Staff staff, Manager manager)
 						std::string inv_id;
 						float qty; std::string unit;
 
-						std::cout << "Ingredient ID & Amount (I01 0.2) or 0 to confirm: ";
+						std::cout << "Ingredient ID & Amount (ING01 0.2) or 0 to confirm: ";
 						std::cin >> inv_id;
 						
 						//check if ingredient exist
