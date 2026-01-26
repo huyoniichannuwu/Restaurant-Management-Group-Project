@@ -900,9 +900,8 @@ void showOrderWaiter(Staff staff,Waiter waiter)
 		std::cout << "Choice: "; std::cin >> waiter_choice;
 		clearScreen();
 
-		if (waiter_choice == 'N') //waiter input order detail
+		if (waiter_choice == 'N' || waiter_choice == 'n') //waiter input order detail
 		{
-			clearScreen();
 			int table_number; std::string customer_name; std::string note;
 			std::cout << "--CREATE NEW ORDER--" << std::endl;
 			do
@@ -931,9 +930,8 @@ void showOrderWaiter(Staff staff,Waiter waiter)
 		}
 
 
-		else if (waiter_choice == 'V')
+		else if (waiter_choice == 'V' || waiter_choice == 'v')
 		{
-			clearScreen();
 			int id;
 			std::cout << "Enter order_id: "; std::cin >> id;
 			try
@@ -954,7 +952,8 @@ void showOrderWaiter(Staff staff,Waiter waiter)
 					std::cout << "You don't have permission to view this order\n";
 					continue;
 				}
-
+				
+				clearScreen();
 				orderModifyWaiter(modify_order, staff);
 			}
 			catch (const std::runtime_error& e)
@@ -989,7 +988,6 @@ void showOrderKitchenStaff(Staff staff, KitchenStaff kitchen_staff)
 		std::cout << "[V] View Detail(Input ID)\t" << "[0] logout\n";
 		char choice;
 		std::cout << "Choice: "; std::cin >> choice;
-		clearScreen();
 		if (choice == 'V' || choice == 'v')
 		{
 			try
@@ -1013,6 +1011,7 @@ void showOrderKitchenStaff(Staff staff, KitchenStaff kitchen_staff)
 					continue;
 				}
 
+				clearScreen();
 				orderModifyKitchenStaff(order, staff);
 			}
 			catch(std::runtime_error& e)
@@ -1047,7 +1046,7 @@ void showOrderCashier(Staff staff, Cashier cashier)
 		std::cout << "[V] View Detail(Input ID)\t" << "[0] logout\n";
 		char choice;
 		std::cout << "Choice: "; std::cin >> choice;
-		clearScreen();
+	
 		if (choice == 'V' || choice == 'v')
 		{
 			try
@@ -1071,6 +1070,7 @@ void showOrderCashier(Staff staff, Cashier cashier)
 					continue;
 				}
 
+				clearScreen();
 				orderModifyCashier(order, staff, cashier);
 
 			}
@@ -1117,9 +1117,9 @@ void showMenuMangement(Staff staff, Manager manager)
 		char choice;
 		std::cout << "Your choice:"; std::cin >> choice;
 
-
 		if (choice == 'A')
 		{
+			clearScreen();
 			std::cout << "---ADD NEW DISH---"<<std::endl;
 			std::string menu_id, menu_name, menu_category;
 			float price; bool is_available;
@@ -1276,6 +1276,8 @@ void showMenuMangement(Staff staff, Manager manager)
 		{
 			//call staff modify
 			std::vector<Staff> staff_list = Staff::getAllStaff();
+
+			clearScreen();
 			staffModify(staff_list,manager);
 
 		}
@@ -1283,6 +1285,7 @@ void showMenuMangement(Staff staff, Manager manager)
 		else if (choice == 'V' || choice == 'v')
 		{
 			//call sale report modify
+			clearScreen();
 			saleModify(manager);
 		}
 
