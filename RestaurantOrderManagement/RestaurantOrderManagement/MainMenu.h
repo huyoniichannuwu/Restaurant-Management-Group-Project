@@ -38,7 +38,7 @@ void printMenuManagement(std::vector<MenuItem> menu_list);
 void orderModifyWaiter(Order& order, Staff staff); //called by showorderwaiter
 void orderModifyKitchenStaff(Order& order, Staff staff); //called by showOrderKitchenStaff
 void orderModifyCashier(Order& order, Staff staff, Cashier cashier); //called by showOrderCashier
-void staffModify(std::vector<Staff>& staff_list, Manager manager); // called by showMenuManagement
+void staffModify(std::vector<Staff>& staff_list, Manager& manager); // called by showMenuManagement
 void saleModify(Manager manager);
 
 

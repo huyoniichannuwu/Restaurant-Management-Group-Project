@@ -636,7 +636,7 @@ void orderModifyCashier(Order& order, Staff staff, Cashier cashier)
 }
 
 
-void staffModify(std::vector<Staff>& staff_list, Manager manager)
+void staffModify(std::vector<Staff>& staff_list, Manager& manager)
 {
 	bool modify_staff = true;
 	do
@@ -684,7 +684,7 @@ void staffModify(std::vector<Staff>& staff_list, Manager manager)
 				Staff staff(staff_id, staff_name, hash_password, phone, role);
 				
 				char confirm;
-				std::cout << "Are you sure you want to add this staff ? y/n"; std::cin >> confirm;
+				std::cout << "Are you sure you want to add this staff ? y/n "; std::cin >> confirm;
 				if (confirm == 'y' || confirm == 'Y')
 				{
 					manager.addStaff(staff);
@@ -1130,17 +1130,28 @@ void showMenuMangement(Staff staff, Manager manager)
 			std::cout << "Enter Category: "; std::getline(std::cin, menu_category);
 
 			//validate user input
-			bool retry = true;
-			do
+			while (true)
 			{
-				retry = false;
-				std::cout << "Enter price: "; std::cin >> price;
+				std::cout << "Enter price: ";
+				std::cin >> price;
+
+				//incase user input char
+				if (std::cin.fail())
+				{
+					std::cin.clear();     // reset fail state
+					cinIgnore();          // delete bufferbuffer
+					std::cout << "Invalid input. Please enter a number.\n";
+					continue;
+				}
+
 				if (price <= 0)
 				{
-					std::cout << "Invalid price, please enter again";
-					retry = true;
+					std::cout << "Price must be greater than 0.\n";
+					continue;
 				}
-			} while (retry == true);
+
+				break; 
+			}
 
 			//validate user input
 			int available;
@@ -1197,6 +1208,7 @@ void showMenuMangement(Staff staff, Manager manager)
 
 						std::cout << "Ingredient ID & Amount (ING01 0.2) or 0 to confirm: ";
 						std::cin >> inv_id;
+						if (inv_id == "0") break;
 						
 						//check if ingredient exist
 						if (!InventoryItem::exists(inv_id))
@@ -1205,7 +1217,6 @@ void showMenuMangement(Staff staff, Manager manager)
 							continue;
 						}
 
-						if (inv_id == "0") break;
 
 						std::cin >> qty;
 						std::cout << "unit: "; std::cin >> unit;
