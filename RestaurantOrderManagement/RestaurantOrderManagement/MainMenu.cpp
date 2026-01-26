@@ -299,7 +299,18 @@ void orderModifyWaiter(Order& order,Staff staff)
 
 				char confirm;
 				std::cout << "Confirm send to kitchen ? y/n"; std::cin >> confirm;
-				if (confirm == 'y') order.sendToKitchen(staff.getId());
+				if (confirm == 'y')
+				{
+					try
+					{
+						order.sendToKitchen(staff.getId());
+						std::cout << "Order has been sent to kitchen" << std::endl;
+					}
+					catch (std::runtime_error& e)
+					{
+						std::cout << e.what() << std::endl;
+					}
+				}
 				else continue;
 			}
 
@@ -308,7 +319,18 @@ void orderModifyWaiter(Order& order,Staff staff)
 			{
 				char confirm;
 				std::cout << "Are you sure customer has done their food ? y/n"; std::cin >> confirm;
-				if (confirm == 'y') order.markCompleted(staff.getId());
+				if (confirm == 'y')
+				{
+					try
+					{
+						order.markCompleted(staff.getId());
+						std::cout << "order has been marked as completed successfully" << std::endl;
+					}
+					catch (std::runtime_error& e)
+					{
+						std::cout << e.what() << std::endl;
+					}
+				}
 				else continue;
 			}
 
@@ -330,7 +352,7 @@ void orderModifyWaiter(Order& order,Staff staff)
 						std::optional<MenuItem> menu_item;
 						bool retry = false;
 
-						do
+						do //check if it is valid menu item
 						{
 							retry = false;
 							try
@@ -352,7 +374,10 @@ void orderModifyWaiter(Order& order,Staff staff)
 								std::cout << e.what() << std::endl;
 								retry = true;
 							}
+
 						} while (retry == true);
+
+
 						int quantity;
 						std::cout << "Enter Quantity: "; std::cin >> quantity;
 						try
@@ -447,8 +472,15 @@ void orderModifyWaiter(Order& order,Staff staff)
 				std::cin >> confirm;
 				if (confirm == 'y')
 				{
-					order.cancel(staff.getId());
-					std::cout << "Order has been cancelled successfully" << std::endl;
+					try
+					{
+						order.cancel(staff.getId());
+						std::cout << "Order has been cancelled successfully" << std::endl;
+					}
+					catch (std::runtime_error& e)
+					{
+						std::cout << e.what() << std::endl;
+					}
 				}
 				else continue;
 			}
@@ -495,7 +527,11 @@ void orderModifyKitchenStaff(Order& order, Staff staff) //called by showOrderKit
 				std::cout << "Confirm set to preapring ? y/n"; std::cin >> confirm;
 				try
 				{
-					if (confirm == 'y') order.markPreparing(staff.getId());
+					if (confirm == 'y')
+					{
+						order.markPreparing(staff.getId());
+						std::cout << "Order has been marked as preparing successfully" << std::endl;
+					}
 
 					else continue;
 				}
@@ -511,7 +547,11 @@ void orderModifyKitchenStaff(Order& order, Staff staff) //called by showOrderKit
 				try
 				{
 					std::cout << "Are you sure this order is ready ? y/n"; std::cin >> confirm;
-					if (confirm == 'y') order.markReady(staff.getId());
+					if (confirm == 'y')
+					{
+						order.markReady(staff.getId());
+						std::cout << "Order has been marked as ready successfully" << std::endl;
+					}
 					else continue;
 				}
 				catch (std::runtime_error& e)
