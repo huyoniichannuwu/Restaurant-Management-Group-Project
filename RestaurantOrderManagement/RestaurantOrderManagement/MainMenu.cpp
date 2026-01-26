@@ -488,6 +488,7 @@ void orderModifyWaiter(Order& order,Staff staff)
 			else if (choice == 'B' || choice == 'b')
 			{
 				modify_order = false;
+				clearScreen();
 			}
 
 			else
@@ -563,6 +564,7 @@ void orderModifyKitchenStaff(Order& order, Staff staff) //called by showOrderKit
 			else if (choice == 'B' || choice == 'b')
 			{
 				modify_order = false;
+				clearScreen();
 			}
 
 	} while (modify_order == true);
@@ -623,6 +625,7 @@ void orderModifyCashier(Order& order, Staff staff, Cashier cashier)
 		else if (choice == 'B' || choice == 'b')
 		{
 			modify_order = false;
+			clearScreen();
 		}
 
 		else
@@ -776,6 +779,7 @@ void staffModify(Manager& manager)
 		else if (choice == 'B' || choice == 'b')
 		{
 			modify_staff = false;
+			clearScreen();
 		}
 		else
 		{
@@ -823,6 +827,7 @@ void saleModify(Manager manager)
 		else if (choice == '0')
 		{
 			modify_sale = false;
+			clearScreen();
 		}
 
 		else
@@ -901,7 +906,6 @@ void showOrderWaiter(Staff staff,Waiter waiter)
 			<< "[V] View Detail(Input ID)\t"
 			<< "[0] logout\n";
 		std::cout << "Choice: "; std::cin >> waiter_choice;
-		clearScreen();
 
 		if (waiter_choice == 'N' || waiter_choice == 'n') //waiter input order detail
 		{
@@ -969,6 +973,7 @@ void showOrderWaiter(Staff staff,Waiter waiter)
 		else if (waiter_choice == '0')
 		{
 			waiter_screen = false;
+			clearScreen();
 		}
 		else
 		{
@@ -1026,6 +1031,7 @@ void showOrderKitchenStaff(Staff staff, KitchenStaff kitchen_staff)
 		else if (choice == '0')
 		{
 			kitchen_screen = false;
+			clearScreen();
 		}
 		else
 		{
@@ -1087,6 +1093,7 @@ void showOrderCashier(Staff staff, Cashier cashier)
 		else if (choice == '0')
 		{
 			cashier_screen = false;
+			clearScreen();
 		}
 
 
@@ -1314,6 +1321,7 @@ void showMenuMangement(Staff staff, Manager manager)
 		else if (choice == '0')
 		{
 			manager_screen = false;
+			clearScreen();
 		}
 
 		else
