@@ -53,7 +53,7 @@ void Manager::addMenuItem(MenuItem item) {
 	//lay DB
 	auto& db = Database::getDB();		
 	//sql statement
-	auto statement = db.prepare("INSERT INTO MenuItem (item_id, item_name, price, category, is_available) VALUES (?, ?, ?, ?, ?)");
+	auto statement = db.prepare("INSERT INTO MenuItem (item_id, item_name, price, category, is_availabe) VALUES (?, ?, ?, ?, ?)");
 	//gan gia tri
 	statement->setString(1, item.getItemId());
 	statement->setString(2, item.getItemName());
