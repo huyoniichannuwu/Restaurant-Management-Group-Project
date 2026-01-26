@@ -278,7 +278,7 @@ void orderModifyWaiter(Order& order,Staff staff)
 			<< "[S] Send to Kitchen\t"
 			<< "[C] Completed\n"
 			<< "[U] Update Order\t"
-			<< "[X] Cancel order"
+			<< "[X] Cancel order\t"
 			<< "[B] Back\n";
 		char choice;
 		std::cout << "choice: "; std::cin >> choice;
