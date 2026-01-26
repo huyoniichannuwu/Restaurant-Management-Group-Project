@@ -636,11 +636,13 @@ void orderModifyCashier(Order& order, Staff staff, Cashier cashier)
 }
 
 
-void staffModify(std::vector<Staff>& staff_list, Manager& manager)
+void staffModify(Manager& manager)
 {
 	bool modify_staff = true;
 	do
 	{
+		std::vector<Staff> staff_list = Staff::getAllStaff();
+
 		clearScreen();
 		printStaffList(staff_list);
 		std::cout << "[A] Add Staff\t"
@@ -712,7 +714,8 @@ void staffModify(std::vector<Staff>& staff_list, Manager& manager)
 				std::string role;
 
 				std::cout << "Enter staff id: "; std::cin >> staff_id;
-				std::cout << "Enter staff name: "; std::cin.ignore(); std::getline(std::cin, staff_name);
+				std::cout << "Enter staff name: "; cinIgnore();
+				std::getline(std::cin, staff_name);
 				std::cout << "Enter staff password: "; std::cin >> password; hash_password = hashPassword(password);
 
 				bool retry;
@@ -1293,10 +1296,9 @@ void showMenuMangement(Staff staff, Manager manager)
 		else if (choice == 'S' || choice == 's')
 		{
 			//call staff modify
-			std::vector<Staff> staff_list = Staff::getAllStaff();
 
 			clearScreen();
-			staffModify(staff_list,manager);
+			staffModify(manager);
 
 		}
 
