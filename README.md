@@ -18,5 +18,5 @@ json file will be like this
 
 }
 
-you will put json file with name db\_config in a folder name config and you will put that folder inside RestaurantOrderManagement/RestaurantOrderManagement
+you will put json file with name **db\_config** in a folder name config and you will put that folder inside RestaurantOrderManagement/RestaurantOrderManagement
 
